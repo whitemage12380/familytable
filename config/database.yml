@@ -1,0 +1,27 @@
+<%
+  def as_db_owner?
+    puts ENV["AS_DB_OWNER"]
+    defined?(ENV["AS_DB_OWNER"]) && ENV["AS_DB_OWNER"] == "true"
+  end
+%>
+
+default: &default
+  adapter: postgresql
+  pool: 5
+  timeout: 5000
+  schema_search_path: "familytable,public"
+  host: 127.0.0.1
+  username: <%= as_db_owner? ? "familytable_owner" : "familytable" %>
+
+development:
+  <<: *default
+  database: familytable_fix_development
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+
+production:
+  <<: *default
