@@ -1,0 +1,46 @@
+// Sign in Layout
+
+$site-background-color: #C6AE82;
+$font1: "Tibet";
+$left_col_width: 12em;
+$left_col_pad: 1em;
+$main_col_pad: 1em;
+
+.main_sign_in {
+  max-width: 50em;
+}
+
+.sign_in {
+  float: left;
+  position: relative;
+  width: 200%;
+  left: $left_col_width + $left_col_pad * 2;
+
+  .main_col_wrap {
+    float: right;
+    position: relative;
+    width: 50%;
+    right: $left_col_width + $left_col_pad * 2;
+    padding-bottom: 1em;
+
+    .main_col {
+      position: relative;
+      right: 100%;
+      margin-left: $left_col_width + $left_col_pad * 2 + $main_col_pad;
+      margin-right: $main_col_pad;
+
+      overflow: hidden;
+    }
+  }
+  .left_col {
+    float: left;
+    position: relative;
+    width: $left_col_width;
+    right: $left_col_width + $left_col_pad;
+    margin-top: 1em;
+  }
+
+  .actions {
+    margin: 1em 0;
+  }
+}

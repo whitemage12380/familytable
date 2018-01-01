@@ -35,6 +35,12 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+gem 'jquery-rails'
+gem 'jquery-ui-rails', '~> 5.0.5'
+gem 'jquery-turbolinks'
+
+gem 'vuejs-rails'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
