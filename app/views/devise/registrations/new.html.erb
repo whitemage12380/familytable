@@ -1,15 +1,18 @@
-<h2>Sign up</h2>
+<h1>Sign up</h1>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
+
+  <h2>User Information</h2>
 
   <div class="field">
     <%= f.label :username %><br />
     <%= f.text_field :username, autofocus: true %>
   </div>
+
   <div class="field">
     <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
+    <%= f.email_field :email %>
   </div>
 
   <div class="field">
@@ -25,9 +28,56 @@
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
 
+  <h2>Family Member Information</h2>
+  <%= fields_for :family_member do |family_member_fields| %>
+    <div class="field">
+      <%= family_member_fields.label :first_name %><br />
+      <%= family_member_fields.text_field :first_name %>
+    </div>
+
+    <div class="field">
+      <%= family_member_fields.label :last_name %><br />
+      <%= family_member_fields.text_field :last_name %>
+    </div>
+
+    <div class="field">
+      <%= family_member_fields.label :birth_date %><br />
+      <%= family_member_fields.text_field :birth_date, class: "datepicker" %>
+    </div>
+
+  <% end %>
+
+  <div class="tab_bar" data-for="family_member_form">
+    <%= hidden_field_tag :family_option, nil, class: :selected_value %>
+    <div class="tab" data-for="new_family">New Family</div>
+    <div class="tab" data-for="existing_family">Existing Family</div>
+    <div class="tab" data-for="existing_family_member">Existing Family Member</div>
+  </div>
+  
+  <div id=family_member_form>
+    <div id="new_family"             class="tab_section hidden">
+      <%= fields_for :family do |family_fields| %>
+        <div class="field">
+          <%= family_fields.label :name %><br />
+          <%= family_fields.text_field :name %>
+        </div>
+        <div class="field">
+          <%= family_fields.label :unique_name %><br />
+          <%= family_fields.text_field :unique_name %>
+        </div>
+      <% end %>
+    </div>
+    <div id="existing_family"        class="tab_section hidden">
+      <p>This functionality is not enabled.</p>
+    </div>
+    <div id="existing_family_member" class="tab_section hidden">
+      <p>This functionality is not enabled.</p>
+    </div>
+  </div>
+  <div class="clear"></div>
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+

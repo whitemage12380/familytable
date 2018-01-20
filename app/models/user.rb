@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
 
     case params[:family_option]
     when "new_family"
+      params.permit!
       family = Family.new(params[:family])
       save_family = true
     when "existing_family"
