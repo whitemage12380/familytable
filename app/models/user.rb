@@ -44,13 +44,24 @@ class User < ActiveRecord::Base
     family_member.birth_date = Date.strptime(params[:family_member][:birth_date], '%m/%d/%Y')
     
     transaction do
-      save
-      if save_family
-        family.save
+      # Save new user
+      unless save
+        raise ActiveRecord::Rollback
       end
+      
+      # Save new family if "New Family" is selected
+      if save_family
+        unless family.save
+          raise ActiveRecord::Rollback
+        end
+      end
+
+      # Save new family member
       family_member.family_id = family.id
       family_member.user_id = id
-      family_member.save
+      unless family_member.save
+        raise ActiveRecord::Rollback
+      end
     end
   end
 end
