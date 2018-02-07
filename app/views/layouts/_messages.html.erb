@@ -1,0 +1,9 @@
+<div class="messages">
+  <% unless notice.nil? %>
+    <div class="notice"><%= notice %></div>
+  <% end %>
+  <% unless alert.nil? %>
+    <div class="clear"></div>
+    <div class="alert"><%= alert %></div>
+  <% end %>
+</div>
