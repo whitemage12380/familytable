@@ -1,4 +1,7 @@
 <% content_for :title, "Dashboard" %>
 <div>
   <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
+  <div id="test">
+    {{ message }}
+  </div>
 </div>
