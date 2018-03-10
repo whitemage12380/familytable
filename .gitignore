@@ -23,3 +23,10 @@
 .byebug_history
 
 ft
+
+# Ignore vim swp files
+*.swp
+*.swo
+
+# Ignore sublime workspace files
+*.sublime-workspace
