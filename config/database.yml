@@ -1,6 +1,5 @@
 <%
   def as_db_owner?
-    puts ENV["AS_DB_OWNER"]
     defined?(ENV["AS_DB_OWNER"]) && ENV["AS_DB_OWNER"] == "true"
   end
 %>
