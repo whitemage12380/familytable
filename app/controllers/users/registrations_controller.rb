@@ -29,7 +29,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
     else
       clean_up_passwords resource
       set_minimum_password_length
-      respond_with resource
+      # respond_with resource
+      #set_flash_message! :warning, :sign_up_failed
+      redirect_back fallback_location: new_user_registration_url, alert: "Sign up failed!"
     end
   end
 
