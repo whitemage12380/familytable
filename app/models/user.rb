@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   attr_accessor :login
 
   # Associations
+  belongs_to :default_family, class_name: "Family", optional: true
   has_many :family_members
   accepts_nested_attributes_for :family_members
 
@@ -24,6 +25,12 @@ class User < ActiveRecord::Base
   end
 
   def save_with_related_objects(params)
+
+    # Display name: Default to "First Last"
+    self.display_name = "#{params[:family_member][:first_name]} #{params[:family_member][:last_name]}"
+
+    # Set up family
+
     family = nil
     save_family = false
 
@@ -40,8 +47,12 @@ class User < ActiveRecord::Base
       raise "Invalid family option #{params[:family_option]}."
     end
 
+    # Set up initial family member
+
     family_member = FamilyMember.new(params[:family_member])
     family_member.birth_date = Date.strptime(params[:family_member][:birth_date], '%m/%d/%Y')
+
+    # Save user and all associations in one transaction
     
     transaction do
       # Save new user
@@ -60,6 +71,12 @@ class User < ActiveRecord::Base
       family_member.family_id = family.id
       family_member.user_id = id
       unless family_member.save
+        raise ActiveRecord::Rollback
+      end
+
+      # Set user's default family
+      self.default_family_id = family.id
+      unless save
         raise ActiveRecord::Rollback
       end
     end
