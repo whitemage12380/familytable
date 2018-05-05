@@ -1,3 +1,41 @@
 // Place all the styles related to the Families controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#family_sidebar {
+  float: left;
+  width: 10em;
+  margin: 0 0.5em;
+  background-color: #A6E6F7;
+
+  .sidebar_heading {
+    margin: 0.1em;
+    background-color: #4A0016;
+    color: #F2E9EB;
+    text-align: center;
+  }
+
+  .family_member_sidebar_entry {
+    height: 4em;
+    margin: 0.2em;
+    padding: 0.1em;
+    border-radius: 1em;
+    background-color: #DBFCAE;
+
+    .sidebar_entry_name {
+      float: left;
+      margin-top: 1em;
+      margin-left: 0.4em;
+    }
+  }
+
+}
+
+.profile_image_circle {
+  float: left;
+  width: 4em;
+  height: 4em;
+  border-radius: 4em;
+  margin-left: 0.2em;
+  background-color: white;
+}

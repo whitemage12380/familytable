@@ -1,7 +1,23 @@
 <% content_for :title, "Dashboard" %>
 <div>
   <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
+  <div class="clear"></div>
+  <div id="family_sidebar">
+    <div class="sidebar_heading">
+      Neuhengen
+    </div>
+    <div class="family_member_sidebar_entry" v-for="family_member in family_members">
+      <div class="profile_image_circle"></div>
+      <div class="sidebar_entry_name">{{ family_member.name }}</div>
+    </div>
+    <div class="family_member_sidebar_entry">
+      <div class="center">New Family Member</div>
+    </div>
+  </div>
+  <div class="clear"></div>
   <div id="test">
     {{ message }}
   </div>
+  <%= current_user.family_members.first.to_json %>
+  <%= user_session.to_json %>
 </div>

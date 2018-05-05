@@ -7,3 +7,21 @@ test = new Vue(
   data:
     message: 'This is a test'
 )
+
+v_family_sidebar = new Vue(
+  el: '#family_sidebar'
+  data:
+    family_members: [
+      { name: 'Egan' }
+      { name: 'Morgan' }
+      { name: 'Diane' }
+      { name: 'Alex' }
+    ]
+  ready: () ->
+    that = this
+    $.ajax(
+      url: ''
+      success: (res) ->
+        that.family_members = res
+    )
+)
