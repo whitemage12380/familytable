@@ -2,13 +2,13 @@
 <div>
   <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
   <div class="clear"></div>
-  <div id="family_sidebar">
+  <div id="family_sidebar" data-familyid="12">
     <div class="sidebar_heading">
-      Neuhengen
+      {{ family.name }}
     </div>
-    <div class="family_member_sidebar_entry" v-for="family_member in family_members">
+    <div class="family_member_sidebar_entry" v-for="family_member in family.family_members">
       <div class="profile_image_circle"></div>
-      <div class="sidebar_entry_name">{{ family_member.name }}</div>
+      <div class="sidebar_entry_name">{{ family_member.first_name }}</div>
     </div>
     <div class="family_member_sidebar_entry">
       <div class="center">New Family Member</div>

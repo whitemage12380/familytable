@@ -10,6 +10,10 @@ class FamiliesController < ApplicationController
   # GET /families/1
   # GET /families/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json { render :json => @family, :include => :family_members }
+    end
   end
 
   # GET /families/new

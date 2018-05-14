@@ -11,17 +11,19 @@ test = new Vue(
 v_family_sidebar = new Vue(
   el: '#family_sidebar'
   data:
-    family_members: [
-      { name: 'Egan' }
-      { name: 'Morgan' }
-      { name: 'Diane' }
-      { name: 'Alex' }
-    ]
-  ready: () ->
+    family:
+      name: "Neuhengen"
+      family_members: [
+        { first_name: 'Egan' }
+        { first_name: 'Morgan' }
+        { first_name: 'Diane' }
+        { first_name: 'Alex' }
+      ]
+  mounted: () ->
     that = this
     $.ajax(
-      url: ''
+      url: '/families/12.json'
       success: (res) ->
-        that.family_members = res
+        that.family = res
     )
 )
