@@ -7,23 +7,31 @@ test = new Vue(
   data:
     message: 'This is a test'
 )
+$ ->
+  sidebar_id = "#family_sidebar"
+  sidebar_elem = $(sidebar_id)
+  sidebar_family_id = sidebar_elem.data("familyid")
 
-v_family_sidebar = new Vue(
-  el: '#family_sidebar'
-  data:
-    family:
-      name: "Neuhengen"
-      family_members: [
-        { first_name: 'Egan' }
-        { first_name: 'Morgan' }
-        { first_name: 'Diane' }
-        { first_name: 'Alex' }
-      ]
-  mounted: () ->
-    that = this
-    $.ajax(
-      url: '/families/12.json'
-      success: (res) ->
-        that.family = res
-    )
-)
+  console.log(sidebar_family_id)
+
+
+  v_family_sidebar = new Vue(
+    el: sidebar_id
+    data:
+      family:
+        name: "Neuhengen"
+        familyid: "a"
+        family_members: [
+          { first_name: 'Egan' }
+          { first_name: 'Morgan' }
+          { first_name: 'Diane' }
+          { first_name: 'Alex' }
+        ]
+    mounted: () ->
+      that = this
+      $.ajax(
+        url: '/families/' + sidebar_family_id + '.json'
+        success: (res) ->
+          that.family = res
+      )
+  )
