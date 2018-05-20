@@ -9,16 +9,25 @@ Vue.component('family-sidebar'
               <div class="sidebar_heading">
                 {{ family.name }}
               </div>
-              <div class="family_member_sidebar_entry" v-for="family_member in family.family_members">
-                <div class="profile_image_circle"></div>
-                <div class="sidebar_entry_name">{{ family_member.first_name }}</div>
-              </div>
+              <family-member-entry v-for="family_member in family.family_members" v-bind:family_member="family_member"></family-member-entry>
               <div class="family_member_sidebar_entry">
                 <div class="center">New Family Member</div>
               </div>
             </div>
             """
 )
+
+Vue.component('family-member-entry'
+  props: ["family_member"]
+  template: """
+            <div class="family_member_sidebar_entry">
+              <div class="profile_image_circle"></div>
+              <div class="sidebar_entry_name">{{ family_member.first_name }}</div>
+            </div>
+            """
+)
+            
+
 $ ->
   new Vue(
     el: "#sidebar"
