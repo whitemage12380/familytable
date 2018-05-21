@@ -25,7 +25,7 @@ Vue.component('family-member-entry'
             <div class="family_member_sidebar_entry" v-on:click="open_edit_pane">
               <div class="profile_image_circle"></div>
               <div class="sidebar_entry_name">{{ family_member.first_name }}</div>
-              <family-member-edit v-if="edit"></family-member-edit>
+              <family-member-edit v-bind:family_member="family_member" v-if="edit"></family-member-edit>
             </div>
             """
   methods:
@@ -37,7 +37,8 @@ Vue.component('family-member-edit'
   props: ["family_member"]
   template: """
             <div class="right_pop_pane">
-              Blarg!
+              <input v-model="family_member.first_name" placeholder="First name" />
+              <input v-model="family_member.last_name" placeholder="Last name" />
             </div>
             """
 )
