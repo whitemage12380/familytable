@@ -29,11 +29,17 @@ class FamilyMembersController < ApplicationController
   # POST /family_members.json
   def create
     @family_member = FamilyMember.new(family_member_params)
+    if @family_member.user == nil
+      @family_member.user = current_user
+    end
+    if params[:family_member][:birth_date].is_a? String
+      @family_member.birth_date = Date.strptime(params[:family_member][:birth_date], '%m/%d/%Y')
+    end
 
     respond_to do |format|
       if @family_member.save
         format.html { redirect_to @family_member, notice: 'Family member was successfully created.' }
-        format.json { render :show, status: :created, location: @family_member }
+        format.json { render json: @family_member, status: :created }
       else
         format.html { render :new }
         format.json { render json: @family_member.errors, status: :unprocessable_entity }

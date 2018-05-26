@@ -16,7 +16,7 @@ Vue.component('family-sidebar'
                 <div v-on:click="open_edit_pane">
                   <div class="center">New Family Member</div>
                 </div>
-                <family-member-edit v-if="edit"></family-member-edit>
+                <family-member-edit v-bind:new_family_member="true" v-bind:family_id="family.id" v-if="edit"></family-member-edit>
               </div>
             </div>
             """
@@ -49,12 +49,54 @@ Vue.component('family-member-edit'
       type: Object
       default: () ->
         return {first_name: "", last_name: ""}
+    new_family_member:
+      type: Boolean
+      default: () ->
+        return false
+    family_id:
+      type: Number
   template: """
             <div class="right_pop_pane">
               <input v-model="family_member.first_name" placeholder="First name" />
               <input v-model="family_member.last_name" placeholder="Last name" />
+              <date-picker v-model="family_member.birth_date" v-once></date-picker>
+              <button v-on:click="save">Save</button>
             </div>
             """
+  methods:
+    save: (event) ->
+      alert(this.family_id)
+      if this.new_family_member
+        save_url = '/family_members'
+        save_method = 'POST'
+        this.family_member.family_id = this.family_id
+      else
+        save_url = '/family_members/#{this.family_member.id}'
+        save_method = 'PATCH'
+      that = this
+      $.ajax(
+        url: save_url
+        method: save_method
+        data:
+          family_member: this.family_member
+        dataType: "json"
+        success: (res) ->
+          #that.$emit('refresh')
+          alert("Hurray!")
+        error: (res) ->
+          alert("Boo")
+      )
+
+)
+
+Vue.component('date-picker'
+  template: "<input/>"
+  mounted: () ->
+    self = this
+    $(this.$el).datepicker({
+      onSelect: (date) ->
+        self.$emit('input', date)
+    })
 )
             
 

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   #get 'users', to: 'users/registrations#show'
 
   resources :families
+  resources :family_members
 
   root to: "home#index"
 
