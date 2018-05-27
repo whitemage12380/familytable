@@ -3,6 +3,6 @@
   <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
   <div class="clear"></div>
   <div id="sidebar">
-    <family-sidebar :family="<%= current_user.default_family.to_json({include: :family_members}) %>"></family-sidebar>
+    <family-sidebar :initial_family="<%= current_user.default_family.to_json({include: :family_members}) %>"></family-sidebar>
   </div>
 </div>
