@@ -1,6 +1,16 @@
 # controls.coffee
 # Generic code for controls
 
+Vue.component('date-picker'
+  template: "<input/>"
+  mounted: () ->
+    self = this
+    $(this.$el).datepicker({
+      onSelect: (date) ->
+        self.$emit('input', date)
+    })
+)
+
 show_tab_content = (tab, tab_bar, content_div_id) ->
   content_container_div_id = tab_bar.data("for")
   content_container = tab_bar.siblings("#" + content_container_div_id)
