@@ -24,6 +24,9 @@ $main_col_pad: 1em;
 .center {margin: 0px auto !important; width: 50%;}
 .center_strict {margin: 0px auto !important; width: 900px !important; }
 .center_small {margin: 0px auto !important; width: 250px !important; }
+.small {width: 5em !important; }
+.med {width: 15em !important; }
+.large {width: 30em !important; }
 .third {width: 30% !important;}
 .half {width: 50% !important;}
 .most {width: 80% !important;}
@@ -102,7 +105,6 @@ body {
 
 .header {
   width: 100%;
-  margin-bottom: 0.2em;
   a, a:hover {
     color: #77c;
     text-decoration: none;
@@ -128,15 +130,15 @@ body {
   }
 }
 
-.main {
+#main {
   float: left;
   position: relative;
-  clear: both;
-  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5em 1em;
+  width: calc(100% - 10em);
   overflow: hidden;
 
   h1 {
-    background-image: url("wood_22.jpg");
     border: 1px solid black;
     border-radius: 1em;
     text-align: center;

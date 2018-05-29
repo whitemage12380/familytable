@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   resources :families
   resources :family_members
+  resources :family_dishes
 
   root to: "home#index"
 
