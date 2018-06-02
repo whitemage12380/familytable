@@ -32,7 +32,8 @@ $main_col_pad: 1em;
 .most {width: 80% !important;}
 .full {width: 100% !important;}
 
-.hidden {display: none; }
+.hidden {display: none !important; }
+.noborder {border: none !important; }
 
 .align-left {text-align: left; }
 .align-right {text-align: right; }
@@ -166,4 +167,23 @@ body {
   margin: 0 1em;
   padding: 1em;
   background-color: white;
+}
+
+.edit_pane {
+  border: 3px solid black;
+  border-radius: 0 1em;
+  background-color: #90D4B1;
+  float: left;
+  clear: both;
+
+  .edit_column {
+    float: left;
+    padding: 1em;
+    border-right: 1px solid #204A34;
+
+    input, textarea {
+      width: 90%;
+      margin-bottom: 1em;
+    }
+  }
 }

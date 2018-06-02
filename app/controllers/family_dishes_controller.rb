@@ -12,4 +12,31 @@ class FamilyDishesController < ApplicationController
       format.json { render :json => @family_dishes }
     end
   end
+
+  # POST /family_dishs
+  # POST /family_dishs.json
+  def create
+    @family_dish = FamilyDish.new(family_dish_params)
+
+    respond_to do |format|
+      if @family_dish.save
+        format.html { redirect_to @family_dish, notice: 'Dish was successfully created.' }
+        format.json { render json: @family_dish, status: :created }
+      else
+        format.html { render :new }
+        format.json { render json: @family_dish.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_family_dish
+      @family_dish = FamilyDish.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def family_dish_params
+      params.require(:family_dish).permit(:parent_id,:family_id,:name,:description,:is_favorite,:comfort_level,:health_level,:cooking_difficulty,:is_prepared_ahead,:prep_time_minutes,:cooking_time_minutes,:serving_size,:protein_grams,:calories)
+    end
 end

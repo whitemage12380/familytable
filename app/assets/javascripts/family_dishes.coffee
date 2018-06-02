@@ -75,8 +75,37 @@ Vue.component('dish-edit'
     family_id:
       type: Number
   template: """
-            <div>
-              TESTING
+            <div class="edit_pane">
+              <div class="edit_column large">
+                <input v-model="dish.name" placeholder="Dish Name" />
+                <textarea v-model="dish.description" placeholder="Description" />
+                <button v-on:click="save">Save</button>
+              </div>
+              <div class="edit_column med noborder">
+                col2
+              </div>
+              <div class="clear"></div>
             </div>
             """
+  methods:
+    save: (event) ->
+      if this.new_dish
+        save_url = '/family_dishes'
+        save_method = 'POST'
+        this.dish.family_id = this.family_id
+      else
+        save_url = '/family_dishes/#{this.family_dish.id}'
+        save_method = 'PATCH'
+      that = this
+      $.ajax(
+        url: save_url
+        method: save_method
+        data:
+          family_dish: this.dish
+        dataType: "json"
+        success: (res) ->
+          that.$emit('refresh')
+        error: (res) ->
+          alert("Boo")
+      )
 )
