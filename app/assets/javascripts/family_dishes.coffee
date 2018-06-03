@@ -12,7 +12,7 @@ Vue.component('dish-browser'
   template: """
             <div id='family_dish_browser'>
               <div class='dish_top_bar'>
-                <div class='left small' v-on:click="toggle_edit_pane">New Dish</div>
+                <div class='left small button' v-on:click="toggle_edit_pane">New Dish</div>
               </div>
               <dish-edit v-bind:new_dish="true" v-bind:family_id="family_id" v-if="edit" v-on:refresh="refresh"></dish-edit>
               <div class="clear"></div>
@@ -44,8 +44,9 @@ Vue.component('dish-entry'
   data: () ->
     return edit: false
   template: """
-           <div>
-             {{ dish.name }} : {{ dish.description }}
+           <div class="dish_entry">
+             <div class="dish_entry_name">{{ dish.name }}</div>
+             <div class="clear"></div>
            </div>
            """
   methods:

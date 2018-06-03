@@ -1,0 +1,22 @@
+// Place all the styles related to the FamilyDish controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+.dish_entry {
+  border: 1px solid #204A34;
+  border-radius: 1em;
+  background-color: #A7E3FA;
+  cursor: pointer;
+  margin-bottom: 0.5em;
+
+  .dish_entry_name {
+    float: left;
+    margin-top: 0.3em; 
+    margin-bottom: 0.3em; 
+    margin-left: 1em;
+    min-width: 4em;
+    width: 30%;
+    overflow: hidden;
+  }
+}
