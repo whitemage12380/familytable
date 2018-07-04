@@ -85,6 +85,7 @@ Vue.component('dish-edit'
               </div>
               <div class="edit_column med noborder">
                 col2
+                <dot-gauge v-bind:value="dish.cooking_difficulty"></dot-gauge>
               </div>
               <div class="clear"></div>
             </div>

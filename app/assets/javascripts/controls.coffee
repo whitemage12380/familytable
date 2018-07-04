@@ -1,6 +1,33 @@
 # controls.coffee
 # Generic code for controls
 
+Vue.component('dot-gauge'
+  props:
+    initial_value:
+      type: Number
+      default: () ->
+        return 0
+    max_value:
+      type: Number
+      default: () ->
+        return 6
+  data: () ->
+    return {
+      value: this.initial_value
+    }
+  template: """
+            <div class="dot_gauge">
+              <div class="dot" v-for="n in max_value" v-bind:class="{dot_filled: is_filled(n)}" v-on:click="value=n"></div>
+              {{ value }}
+            </div>
+            """
+  methods:
+    is_filled: (n) ->
+      return n <= this.value
+      #console.log(n + " - " + (value ? value : "undef") + " - " + (value ? n > value : 0))
+      #return (value ? n <= value : false)
+)
+
 Vue.component('date-picker'
   template: "<input/>"
   mounted: () ->
