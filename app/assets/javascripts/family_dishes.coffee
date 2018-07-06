@@ -17,7 +17,7 @@ Vue.component('dish-browser'
               <dish-edit v-bind:new_dish="true" v-bind:family_id="family_id" v-if="edit" v-on:refresh="refresh"></dish-edit>
               <div class="clear"></div>
               <div class='dish_list'>
-                <dish-entry v-for="dish in dishes" :key="dish.name" v-bind:dish="dish"></dish-entry>
+                <dish-entry v-for="dish in dishes" :key="dish.id" v-bind:dish="dish"></dish-entry>
               </div>
             </div>
             """
@@ -44,14 +44,21 @@ Vue.component('dish-entry'
   data: () ->
     return edit: false
   template: """
-           <div class="dish_entry">
-             <div class="dish_entry_name">{{ dish.name }}</div>
+           <div class="dish_entry_space">
+             <div class="dish_entry" v-on:click="toggle_edit_pane">
+               <div class="dish_entry_name">{{ dish.name }}</div>
+               <div class="clear"></div>
+             </div>
+             <dish-edit v-bind:dish="dish" v-bind:family_id="dish.family_id" v-if="edit" v-on:refresh="refresh"></dish-edit>
              <div class="clear"></div>
            </div>
            """
   methods:
     toggle_edit_pane: (event) ->
       this.edit = !(this.edit)
+    refresh: (event) ->
+      this.edit = false
+      this.$emit('refresh')
 )
 
 Vue.component('dish-edit'
@@ -84,8 +91,8 @@ Vue.component('dish-edit'
                 <button v-on:click="save">Save</button>
               </div>
               <div class="edit_column med noborder">
-                col2
-                <dot-gauge v-bind:value="dish.cooking_difficulty"></dot-gauge>
+                Cooking Difficulty
+                <dot-gauge v-bind:initial_value="dish.cooking_difficulty" v-model="dish.cooking_difficulty"></dot-gauge>
               </div>
               <div class="clear"></div>
             </div>
@@ -97,7 +104,10 @@ Vue.component('dish-edit'
         save_method = 'POST'
         this.dish.family_id = this.family_id
       else
-        save_url = '/family_dishes/#{this.family_dish.id}'
+        save_url = "/family_dishes/#{this.dish.id}"
+        #Vue.delete(this.dish, "id")
+        #Vue.delete(this.dish, "created_at")
+        #Vue.delete(this.dish, "updated_at")
         save_method = 'PATCH'
       that = this
       $.ajax(

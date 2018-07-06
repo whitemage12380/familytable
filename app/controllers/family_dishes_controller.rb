@@ -1,4 +1,6 @@
 class FamilyDishesController < ApplicationController
+  before_action :set_family_dish, only: [:show, :edit, :update, :destroy]
+
   # GET /family_dishes
   # GET /family_dishes.json
   def index
@@ -13,8 +15,8 @@ class FamilyDishesController < ApplicationController
     end
   end
 
-  # POST /family_dishs
-  # POST /family_dishs.json
+  # POST /family_dishes
+  # POST /family_dishes.json
   def create
     @family_dish = FamilyDish.new(family_dish_params)
 
@@ -24,6 +26,20 @@ class FamilyDishesController < ApplicationController
         format.json { render json: @family_dish, status: :created }
       else
         format.html { render :new }
+        format.json { render json: @family_dish.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # PATCH/PUT /family_dishes/1
+  # PATCH/PUT /family_dishes/1.json
+  def update
+    respond_to do |format|
+      if @family_dish.update(family_dish_params)
+        format.html { redirect_to @family_dish, notice: 'Family member was successfully updated.' }
+        format.json { render json: @family_dish, status: :ok }
+      else
+        format.html { render :edit }
         format.json { render json: @family_dish.errors, status: :unprocessable_entity }
       end
     end

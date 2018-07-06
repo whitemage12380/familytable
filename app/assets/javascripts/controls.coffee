@@ -17,15 +17,15 @@ Vue.component('dot-gauge'
     }
   template: """
             <div class="dot_gauge">
-              <div class="dot" v-for="n in max_value" v-bind:class="{dot_filled: is_filled(n)}" v-on:click="value=n"></div>
-              {{ value }}
+              <div class="dot" v-for="n in max_value" v-bind:class="{dot_filled: is_filled(n)}" v-on:click="select_value(n)"></div>
             </div>
             """
   methods:
     is_filled: (n) ->
       return n <= this.value
-      #console.log(n + " - " + (value ? value : "undef") + " - " + (value ? n > value : 0))
-      #return (value ? n <= value : false)
+    select_value: (n) ->
+      this.value = n
+      this.$emit('input', this.value)
 )
 
 Vue.component('date-picker'

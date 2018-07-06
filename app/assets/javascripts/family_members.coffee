@@ -47,7 +47,7 @@ Vue.component('family-member-edit'
         save_method = 'POST'
         this.family_member.family_id = this.family_id
       else
-        save_url = '/family_members/#{this.family_member.id}'
+        save_url = "/family_members/#{this.family_member.id}"
         save_method = 'PATCH'
       that = this
       $.ajax(
