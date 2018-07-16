@@ -3,6 +3,9 @@
 
 Vue.component('dot-gauge'
   props:
+    is_input:
+      type: Boolean
+      default: true
     initial_value:
       type: Number
       default: () ->
@@ -16,16 +19,20 @@ Vue.component('dot-gauge'
       value: this.initial_value
     }
   template: """
-            <div class="dot_gauge">
-              <div class="dot" v-for="n in max_value" v-bind:class="{dot_filled: is_filled(n)}" v-on:click="select_value(n)"></div>
+            <div class="dot_gauge_form">
+              <div class="dot_gauge_label"><slot></slot></div>
+              <div class="dot_gauge">
+                <div class="dot" v-for="n in max_value" v-bind:class="{dot_filled: is_filled(n)}" v-on:click="select_value(n)"></div>
+              </div>
             </div>
             """
   methods:
     is_filled: (n) ->
       return n <= this.value
     select_value: (n) ->
-      this.value = n
-      this.$emit('input', this.value)
+      if is_input
+        this.value = n
+        this.$emit('input', this.value)
 )
 
 Vue.component('date-picker'

@@ -100,10 +100,21 @@ $main_col_pad: 1em;
   margin-bottom: 0.5em;
 }
 
+
+.dot_gauge_label {
+  float: left;
+  clear: left;
+  width: 5em;
+}
+
+.dot_gauge {
+  float: left;
+}
+
 .dot {
   float: left;
   border: 2px solid black;
-  margin: 0 2px;
+  margin: 2px 2px;
   width: 8px;
   height: 8px;
 }

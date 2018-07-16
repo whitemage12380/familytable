@@ -47,6 +47,11 @@ Vue.component('dish-entry'
            <div class="dish_entry_space">
              <div class="dish_entry" v-on:click="toggle_edit_pane">
                <div class="dish_entry_name">{{ dish.name }}</div>
+               <div class="dish_entry_levels">
+                 <dot-gauge is_input="false" v-bind:initial_value="dish.cooking_difficulty">Difficulty</dot-gauge>
+                 <dot-gauge is_input="false" v-bind:initial_value="dish.health_level">Health</dot-gauge>
+                 <dot-gauge is_input="false" v-bind:initial_value="dish.comfort_level">Comfort</dot-gauge>
+               </div>
                <div class="clear"></div>
              </div>
              <dish-edit v-bind:dish="dish" v-bind:family_id="dish.family_id" v-if="edit" v-on:refresh="refresh"></dish-edit>
@@ -91,8 +96,9 @@ Vue.component('dish-edit'
                 <button v-on:click="save">Save</button>
               </div>
               <div class="edit_column med noborder">
-                Cooking Difficulty
-                <dot-gauge v-bind:initial_value="dish.cooking_difficulty" v-model="dish.cooking_difficulty"></dot-gauge>
+                <dot-gauge v-bind:initial_value="dish.cooking_difficulty" v-model="dish.cooking_difficulty">Difficulty</dot-gauge>
+                <dot-gauge v-bind:initial_value="dish.health_level" v-model="dish.health_level">Health</dot-gauge>
+                <dot-gauge v-bind:initial_value="dish.comfort_level" v-model="dish.comfort_level">Comfort</dot-gauge>
               </div>
               <div class="clear"></div>
             </div>
@@ -105,9 +111,6 @@ Vue.component('dish-edit'
         this.dish.family_id = this.family_id
       else
         save_url = "/family_dishes/#{this.dish.id}"
-        #Vue.delete(this.dish, "id")
-        #Vue.delete(this.dish, "created_at")
-        #Vue.delete(this.dish, "updated_at")
         save_method = 'PATCH'
       that = this
       $.ajax(
