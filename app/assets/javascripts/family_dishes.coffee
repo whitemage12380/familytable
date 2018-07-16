@@ -55,12 +55,17 @@ Vue.component('dish-entry'
     return edit: false
   template: """
            <div class="dish_entry_space">
-             <div class="dish_entry" v-on:click="toggle_edit_pane">
-               <div class="dish_entry_name">{{ dish.name }}</div>
-               <div class="dish_entry_levels">
-                 <dot-gauge is_input="false" v-bind:initial_value="dish.cooking_difficulty">Difficulty</dot-gauge>
-                 <dot-gauge is_input="false" v-bind:initial_value="dish.health_level">Health</dot-gauge>
-                 <dot-gauge is_input="false" v-bind:initial_value="dish.comfort_level">Comfort</dot-gauge>
+             <div class="dish_entry">
+               <div class="dish_entry_main" v-on:click="toggle_edit_pane">
+                 <div class="dish_entry_name">{{ dish.name }}</div>
+                 <div class="dish_entry_levels">
+                   <dot-gauge is_input="false" v-bind:initial_value="dish.cooking_difficulty">Difficulty</dot-gauge>
+                   <dot-gauge is_input="false" v-bind:initial_value="dish.health_level">Health</dot-gauge>
+                   <dot-gauge is_input="false" v-bind:initial_value="dish.comfort_level">Comfort</dot-gauge>
+                 </div>
+               </div>
+               <div class="dish_entry_controls">
+                 <div class="dish_edit_button">Edit</div>
                </div>
                <div class="clear"></div>
              </div>

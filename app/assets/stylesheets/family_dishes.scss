@@ -11,19 +11,32 @@
     cursor: pointer;
     margin-bottom: 0.5em;
 
-    .dish_entry_name {
+    .dish_entry_main {
       float: left;
-      margin-top: 0.3em; 
-      margin-bottom: 0.3em; 
-      margin-left: 1em;
-      min-width: 4em;
-      width: 30%;
-      overflow: hidden;
-    }
+      width: 90%;
 
-    .dish_entry_levels {
-      float: left;
-      width: 20%;
+      .dish_entry_name {
+        float: left;
+        margin-top: 0.3em; 
+        margin-bottom: 0.3em; 
+        margin-left: 1em;
+        min-width: 4em;
+        width: 30%;
+        overflow: hidden;
+      }
+
+      .dish_entry_levels {
+        float: left;
+        width: 20%;
+      }
+    }
+    .dish_entry_controls {
+      float: right;
+      width: 10%;
+      .dish_edit_button {
+        float: right;
+        margin: 0.5em;
+      }
     }
   }
 }
