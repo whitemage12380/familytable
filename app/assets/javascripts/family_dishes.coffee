@@ -65,7 +65,7 @@ Vue.component('dish-entry'
                  </div>
                </div>
                <div class="dish_entry_controls">
-                 <div class="dish_edit_button">Edit</div>
+                 <div class="dish_edit_button" v-on:click="toggle_edit_pane">Edit</div>
                </div>
                <div class="clear"></div>
              </div>

@@ -8,12 +8,12 @@
     border: 1px solid #204A34;
     border-radius: 1em;
     background-color: #A7E3FA;
-    cursor: pointer;
     margin-bottom: 0.5em;
 
     .dish_entry_main {
       float: left;
       width: 90%;
+      cursor: pointer;
 
       .dish_entry_name {
         float: left;
@@ -33,9 +33,11 @@
     .dish_entry_controls {
       float: right;
       width: 10%;
+
       .dish_edit_button {
         float: right;
         margin: 0.5em;
+        cursor: pointer;
       }
     }
   }
