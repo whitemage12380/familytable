@@ -192,6 +192,16 @@ body {
 
 // Common elements
 
+.list_section {
+  float: left;
+  width: 60%;
+}
+
+.detail_section {
+  float: right;
+  width: 40%;
+}
+
 .right_pop_pane {
   z-index: 10;
   position: absolute;

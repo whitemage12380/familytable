@@ -8,16 +8,26 @@ Vue.component('dish-browser'
     return {
       dishes: this.initial_dishes
       edit: false
+      selected_dish_id: null
     }
   template: """
             <div id='family_dish_browser'>
               <div class='dish_top_bar'>
                 <div class='left small button' v-on:click="toggle_edit_pane">New Dish</div>
+                <dish-edit v-bind:new_dish="true" v-bind:family_id="family_id" v-if="edit" v-on:refresh="refresh"></dish-edit>
               </div>
-              <dish-edit v-bind:new_dish="true" v-bind:family_id="family_id" v-if="edit" v-on:refresh="refresh"></dish-edit>
               <div class="clear"></div>
-              <div class='dish_list'>
-                <dish-entry v-for="dish in dishes" :key="dish.id" v-bind:dish="dish"></dish-entry>
+              <div class="list_section">
+                <div class='dish_list'>
+                  <dish-entry v-for="dish in dishes" :key="dish.id" v-bind:dish="dish"></dish-entry>
+                </div>
+              </div>
+              <div class="detail_section">
+                <div v-if="selected_dish_id != null">
+                </div>
+                <div v-else class="align-center">
+                  Select a dish to view details.
+                </div>
               </div>
             </div>
             """
