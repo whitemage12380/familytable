@@ -9,6 +9,7 @@ Vue.component('dish-browser'
       dishes: this.initial_dishes
       edit: false
       selected_dish_id: null
+      selected_dish_mode: "detail"
     }
   template: """
             <div id='family_dish_browser'>
@@ -19,11 +20,12 @@ Vue.component('dish-browser'
               <div class="clear"></div>
               <div class="list_section">
                 <div class='dish_list'>
-                  <dish-entry v-for="dish in dishes" :key="dish.id" v-bind:dish="dish"></dish-entry>
+                  <dish-entry v-for="dish in dishes" :key="dish.id" v-bind:dish="dish" v-on:select="set_dish_detail"></dish-entry>
                 </div>
               </div>
               <div class="detail_section">
                 <div v-if="selected_dish_id != null">
+                  Selected {{ selected_dish_id }}
                 </div>
                 <div v-else class="align-center">
                   Select a dish to view details.
@@ -47,6 +49,9 @@ Vue.component('dish-browser'
       )
     toggle_edit_pane: () ->
       this.edit = !(this.edit)
+    set_dish_detail: (dish_id) ->
+      this.selected_dish_id = dish_id
+      this.selected_dish_mode = "detail"
 )
 
 Vue.component('dish-entry'
@@ -56,12 +61,12 @@ Vue.component('dish-entry'
   template: """
            <div class="dish_entry_space">
              <div class="dish_entry">
-               <div class="dish_entry_main" v-on:click="toggle_edit_pane">
+               <div class="dish_entry_main" v-on:click="$emit('select', dish.id)">
                  <div class="dish_entry_name">{{ dish.name }}</div>
                  <div class="dish_entry_levels">
-                   <dot-gauge is_input="false" v-bind:initial_value="dish.cooking_difficulty">Difficulty</dot-gauge>
-                   <dot-gauge is_input="false" v-bind:initial_value="dish.health_level">Health</dot-gauge>
-                   <dot-gauge is_input="false" v-bind:initial_value="dish.comfort_level">Comfort</dot-gauge>
+                   <dot-gauge v-bind:is_input="false" v-bind:initial_value="dish.cooking_difficulty">Difficulty</dot-gauge>
+                   <dot-gauge v-bind:is_input="false" v-bind:initial_value="dish.health_level">Health</dot-gauge>
+                   <dot-gauge v-bind:is_input="false" v-bind:initial_value="dish.comfort_level">Comfort</dot-gauge>
                  </div>
                </div>
                <div class="dish_entry_controls">
