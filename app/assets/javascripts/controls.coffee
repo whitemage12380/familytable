@@ -30,7 +30,7 @@ Vue.component('dot-gauge'
     is_filled: (n) ->
       return n <= this.value
     select_value: (n) ->
-      if is_input
+      if this.is_input
         this.value = n
         this.$emit('input', this.value)
 )
