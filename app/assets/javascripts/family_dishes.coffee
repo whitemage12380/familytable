@@ -8,7 +8,7 @@ Vue.component('dish-browser'
     return {
       dishes: this.initial_dishes
       edit: false
-      selected_dish_id: null
+      selected_dish: null
       selected_dish_mode: "detail"
     }
   template: """
@@ -24,9 +24,7 @@ Vue.component('dish-browser'
                 </div>
               </div>
               <div class="detail_section">
-                <div v-if="selected_dish_id != null">
-                  Selected {{ selected_dish_id }}
-                </div>
+                <dish-detail v-if="selected_dish != null" v-bind:dish="selected_dish"></dish-detail>
                 <div v-else class="align-center">
                   Select a dish to view details.
                 </div>
@@ -50,7 +48,8 @@ Vue.component('dish-browser'
     toggle_edit_pane: () ->
       this.edit = !(this.edit)
     set_dish_detail: (dish_id) ->
-      this.selected_dish_id = dish_id
+      select_dish = (x) -> x.id == dish_id
+      this.selected_dish = this.dishes.filter(select_dish)[0]
       this.selected_dish_mode = "detail"
 )
 
@@ -84,6 +83,15 @@ Vue.component('dish-entry'
     refresh: (event) ->
       this.edit = false
       this.$emit('refresh')
+)
+
+Vue.component('dish-detail'
+  props: ["dish"]
+  template: """
+            <div class="detail_pane">
+              <h1>{{ dish.name }}</h1>
+            </div>
+            """
 )
 
 Vue.component('dish-edit'

@@ -200,6 +200,13 @@ body {
 .detail_section {
   float: right;
   width: 40%;
+
+  .detail_pane {
+    margin:0.3em;
+    border: 1px solid black;
+    border-radius: 1em;
+    padding: 1em;
+  }
 }
 
 .right_pop_pane {
