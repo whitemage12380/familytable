@@ -200,13 +200,8 @@ body {
 .detail_section {
   float: right;
   width: 40%;
-
-  .detail_pane {
-    margin:0.3em;
-    border: 1px solid black;
-    border-radius: 1em;
-    padding: 1em;
-  }
+  box-sizing: border-box;
+  padding: 0 1em;
 }
 
 .right_pop_pane {
@@ -220,12 +215,26 @@ body {
   background-color: white;
 }
 
-.edit_pane {
+.edit_pane, .detail_pane {
   border: 3px solid black;
   border-radius: 0 1em;
-  background-color: #90D4B1;
   float: left;
+  width: 100%;
   clear: both;
+}
+
+.pane_column {
+  float: left;
+  padding: 1em;
+  border-right: 1px solid #204A34;
+}
+
+.detail_pane {
+  background-color: #DEC4FF;
+}
+
+.edit_pane {
+  background-color: #90D4B1;
 
   .edit_column {
     float: left;

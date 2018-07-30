@@ -33,6 +33,9 @@ Vue.component('dot-gauge'
       if this.is_input
         this.value = n
         this.$emit('input', this.value)
+  watch:
+    initial_value: (val) ->
+      this.value = val
 )
 
 Vue.component('date-picker'
