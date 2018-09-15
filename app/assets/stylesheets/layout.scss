@@ -216,6 +216,7 @@ body {
 }
 
 .edit_pane, .detail_pane {
+  position: relative;
   border: 3px solid black;
   border-radius: 0 1em;
   float: left;
@@ -227,6 +228,13 @@ body {
   float: left;
   padding: 1em;
   border-right: 1px solid #204A34;
+}
+
+.pane_control {
+  position: absolute;
+  top: 0.4em;
+  right: 0.4em;
+  cursor: pointer;
 }
 
 .detail_pane {

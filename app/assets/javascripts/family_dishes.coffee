@@ -2,6 +2,21 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+minutes_to_natural = (min) ->
+  hour_string="hours"
+  min_string="minutes"
+  hours = min % 60
+  min_left = min - (hours * 60)
+  hour_string = hour_string.replace(/s$/, "") if hours = 1
+  min_string  = min_string.replace(/s$/, "")  if min_left = 1
+  if hours > 0
+    output = "#{hours} #{hour_string}"
+    if min_left > 0
+      output += " #{min_left} #{min_string}"
+  else
+    output = "#{min} #{min_string}"
+
+
 Vue.component('dish-browser'
   props: ["initial_dishes", "family_id"]
   data: () ->
@@ -23,9 +38,19 @@ Vue.component('dish-browser'
                 </div>
               </div>
               <div class="detail_section">
-                <dish-detail    v-if="selected_dish != null && selected_dish_mode == 'detail'" v-bind:dish="selected_dish"></dish-detail>
-                <dish-edit v-else-if="selected_dish != null && selected_dish_mode == 'edit'"   v-bind:dish="selected_dish" v-bind:family_id="family_id" v-on:refresh="refresh"></dish-edit>
-                <dish-edit v-else-if="selected_dish_mode == 'new'"                             v-bind:new_dish="true"      v-bind:family_id="family_id" v-on:refresh="refresh"></dish-edit>
+                <dish-detail    v-if="selected_dish != null && selected_dish_mode == 'detail'" v-bind:dish="selected_dish"
+                                                                                               v-on:edit="set_dish_edit">
+                                                                                               </dish-detail>
+                <dish-edit v-else-if="selected_dish != null && selected_dish_mode == 'edit'"   v-bind:dish="selected_dish" 
+                                                                                               v-bind:family_id="family_id"
+                                                                                               v-on:refresh="refresh"
+                                                                                               v-on:cancel="set_dish_detail">
+                                                                                               </dish-edit>
+                <dish-edit v-else-if="selected_dish_mode == 'new'"                             v-bind:new_dish="true"
+                                                                                               v-bind:family_id="family_id"
+                                                                                               v-on:refresh="refresh"
+                                                                                               v-on:cancel="unset_dish_detail">
+                                                                                               </dish-edit>
                 <div v-else class="align-center">
                   Select a dish to view details.
                 </div>
@@ -93,6 +118,7 @@ Vue.component('dish-detail'
   props: ["dish"]
   template: """
             <div class="detail_pane">
+              <div class="pane_control" v-on:click="$emit('edit', dish.id)">E</div>
               <h2>{{ dish.name }}</h2>
               <p>{{ dish.description }}</p>
             </div>
@@ -123,15 +149,19 @@ Vue.component('dish-edit'
       type: Number
   template: """
             <div class="edit_pane">
+              <div class="pane_control" v-on:click="$emit('cancel', dish.id)">B</div>
               <div class="edit_column large">
                 <input v-model="dish.name" placeholder="Dish Name" />
-                <textarea v-model="dish.description" placeholder="Description" />
+                <textarea v-model="dish.description" placeholder="Description" class="form_description" />
                 <button v-on:click="save">Save</button>
               </div>
               <div class="edit_column med noborder">
                 <dot-gauge v-bind:initial_value="dish.cooking_difficulty" v-model="dish.cooking_difficulty">Difficulty</dot-gauge>
                 <dot-gauge v-bind:initial_value="dish.health_level" v-model="dish.health_level">Health</dot-gauge>
                 <dot-gauge v-bind:initial_value="dish.comfort_level" v-model="dish.comfort_level">Comfort</dot-gauge>
+                <div class="clear"></div>
+                <h5>Prep Time</h5>
+                <input />
               </div>
               <div class="clear"></div>
             </div>
