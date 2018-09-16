@@ -85,7 +85,7 @@ Vue.component('dish-browser'
                 <dish-edit v-else-if="selected_dish_mode == 'new'"                             v-bind:new_dish="true"
                                                                                                v-bind:family_id="family_id"
                                                                                                v-on:refresh="refresh"
-                                                                                               v-on:cancel="unset_dish_detail">
+                                                                                               v-on:cancel="unset_dish_pane">
                                                                                                </dish-edit>
                 <div v-else class="align-center">
                   Select a dish to view details.
@@ -104,9 +104,9 @@ Vue.component('dish-browser'
         success: (res) ->
           that.dishes = res
           if that.selected_dish_mode == "edit"
-            that.set_dish_detail
+            that.selected_dish_mode = "detail"
           else
-            that.unset_dish_pane
+            that.unset_dish_pane()
         error: (res) ->
           alert("Boo2")
       )
