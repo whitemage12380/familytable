@@ -243,12 +243,7 @@ body {
 
 .edit_pane {
   background-color: #90D4B1;
-
-  .edit_column {
-    float: left;
-    padding: 1em;
-    border-right: 1px solid #204A34;
-
+  .pane_column {
     input, textarea {
       width: 90%;
       margin-bottom: 1em;
