@@ -172,8 +172,16 @@ Vue.component('dish-detail'
                 <dot-gauge v-if="dish.comfort_level > 0"      v-bind:is_input="false" v-bind:initial_value="dish.comfort_level">Comfort</dot-gauge>
                 <div class="clear"></div>
                 <div v-if="dish.prep_time_minutes > 0">
-                  <h5>Prep Time</h5>
+                  <h5>Preparation Time</h5>
                   <p>{{ minutes_to_natural(dish.prep_time_minutes) }}</p>
+                </div>
+                <div v-if="dish.cooking_time_minutes > 0">
+                  <h5>Cooking Time</h5>
+                  <p>{{ minutes_to_natural(dish.cooking_time_minutes) }}</p>
+                </div>
+                <div v-if="dish.prep_time_minutes > 0 && dish.cooking_time_minutes > 0">
+                  <h5>Total Time</h5>
+                  <p>{{ minutes_to_natural(dish.prep_time_minutes + dish.cooking_time_minutes) }}</p>
                 </div>
               </div>
               <div class="clear"></div>
@@ -217,8 +225,10 @@ Vue.component('dish-edit'
                 <dot-gauge v-bind:initial_value="dish.health_level" v-model="dish.health_level">Health</dot-gauge>
                 <dot-gauge v-bind:initial_value="dish.comfort_level" v-model="dish.comfort_level">Comfort</dot-gauge>
                 <div class="clear"></div>
-                <h5>Prep Time</h5>
+                <h5>Preparation Time</h5>
                 <input v-once v-bind:value="minutes_to_natural(dish.prep_time_minutes)" v-on:input="dish.prep_time_minutes = natural_to_minutes($event.target.value)" />
+                <h5>Cooking Time</h5>
+                <input v-once v-bind:value="minutes_to_natural(dish.cooking_time_minutes)" v-on:input="dish.cooking_time_minutes = natural_to_minutes($event.target.value)" />
               </div>
               <div class="clear"></div>
             </div>
