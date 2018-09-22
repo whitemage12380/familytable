@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Parent:</strong>
+  <%= @ingredient.parent_id %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @ingredient.name %>
+</p>
+
+<p>
+  <strong>Is basic:</strong>
+  <%= @ingredient.is_basic %>
+</p>
+
+<p>
+  <strong>Is public:</strong>
+  <%= @ingredient.is_public %>
+</p>
+
+<p>
+  <strong>Serving size:</strong>
+  <%= @ingredient.serving_size %>
+</p>
+
+<p>
+  <strong>Calories:</strong>
+  <%= @ingredient.calories %>
+</p>
+
+<p>
+  <strong>Protein grams:</strong>
+  <%= @ingredient.protein_grams %>
+</p>
+
+<%= link_to 'Edit', edit_ingredient_path(@ingredient) %> |
+<%= link_to 'Back', ingredients_path %>

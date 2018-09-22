@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180310215241) do
+ActiveRecord::Schema.define(version: 20180922063053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,16 @@ ActiveRecord::Schema.define(version: 20180310215241) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["unique_name"], name: "index_families_on_unique_name", unique: true
+  end
+
+  create_table "family_dish_ingredients", force: :cascade do |t|
+    t.bigint "family_dish_id", null: false
+    t.bigint "ingredient_id", null: false
+    t.text "relationship", default: "primary", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family_dish_id", "ingredient_id"], name: "index_family_dish_ingredients_unique_join_cols", unique: true
+    t.index ["ingredient_id"], name: "index_family_dish_ingredients_on_ingredient_id"
   end
 
   create_table "family_dishes", force: :cascade do |t|
@@ -52,6 +62,21 @@ ActiveRecord::Schema.define(version: 20180310215241) do
     t.boolean "is_guest", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "ingredients", force: :cascade do |t|
+    t.integer "parent_id"
+    t.bigint "family_id"
+    t.text "name", null: false
+    t.boolean "is_basic", default: true, null: false
+    t.boolean "is_public", default: true, null: false
+    t.text "serving_size"
+    t.integer "calories"
+    t.integer "protein_grams"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family_id"], name: "index_ingredients_on_family_id"
+    t.index ["name"], name: "index_ingredients_on_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -93,9 +118,13 @@ ActiveRecord::Schema.define(version: 20180310215241) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "family_dish_ingredients", "family_dishes"
+  add_foreign_key "family_dish_ingredients", "ingredients"
   add_foreign_key "family_dishes", "families"
   add_foreign_key "family_dishes", "family_dishes", column: "parent_id"
   add_foreign_key "family_members", "families"
   add_foreign_key "family_members", "users"
+  add_foreign_key "ingredients", "families"
+  add_foreign_key "ingredients", "ingredients", column: "parent_id"
   add_foreign_key "users", "families", column: "default_family_id"
 end

@@ -1,0 +1,52 @@
+<%= form_with(model: ingredient, local: true) do |form| %>
+  <% if ingredient.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(ingredient.errors.count, "error") %> prohibited this ingredient from being saved:</h2>
+
+      <ul>
+      <% ingredient.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :parent_id %>
+    <%= form.number_field :parent_id, id: :ingredient_parent_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, id: :ingredient_name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :is_basic %>
+    <%= form.check_box :is_basic, id: :ingredient_is_basic %>
+  </div>
+
+  <div class="field">
+    <%= form.label :is_public %>
+    <%= form.check_box :is_public, id: :ingredient_is_public %>
+  </div>
+
+  <div class="field">
+    <%= form.label :serving_size %>
+    <%= form.text_field :serving_size, id: :ingredient_serving_size %>
+  </div>
+
+  <div class="field">
+    <%= form.label :calories %>
+    <%= form.number_field :calories, id: :ingredient_calories %>
+  </div>
+
+  <div class="field">
+    <%= form.label :protein_grams %>
+    <%= form.number_field :protein_grams, id: :ingredient_protein_grams %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

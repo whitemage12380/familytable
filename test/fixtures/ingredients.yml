@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  parent_id: 1
+  name: MyString
+  is_basic: false
+  is_public: false
+  serving_size: MyString
+  calories: 1
+  protein_grams: 1
+
+two:
+  parent_id: 1
+  name: MyString
+  is_basic: false
+  is_public: false
+  serving_size: MyString
+  calories: 1
+  protein_grams: 1

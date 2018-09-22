@@ -1,0 +1,181 @@
+Users are individual human beings who are able to log in.
+Family members are individual human beings who are associated with families and may or may not associate with a single user.
+Families are groups of family members.
+
+Ingredients are individual food products.
+Dishes are a prepared food. They may consist of one or more listed ingredients, but are not required to.
+Meals are a set of one or more prepared foods that go well together. A meal is encouraged to consist of one or more listed dishes, but is not required to.
+
+Users have food preferences for meals, dishes, and ingredients.
+(Maybe this should be food relationship, because it also describes whether it's possible to eat it, which isn't a preference)
+
+Shall I use id or (tablename)_id?
+
+----
+family_members
+----
+id           BIGSERIAL PRIMARY KEY
+family_id    BIGINTEGER NOT NULL
+user_id      BIGINTEGER NULL REFERENCES users (id)
+first_name   TEXT NOT NULL
+last_name    TEXT NULL
+birth_date   DATE NOT NULL
+is_guest     BOOLEAN NOT NULL DEFAULT FALSE
+
+----
+families
+----
+id           BIGSERIAL PRIMARY KEY
+unique_name  TEXT NOT NULL
+name         TEXT NOT NULL
+
+
+----
+family_ingredients
+----
+id            BIGSERIAL PRIMARY KEY
+family_id     BIGINTEGER NOT NULL REFERENCES families (id)
+ingredient_id BIGINTEGER NOT NULL REFERENCES ingredients (id)
+is_favorite   BOOLEAN NOT NULL DEFAULT FALSE
+
+----
+store_ingredients
+----
+id              BIGSERIAL PRIMARY KEY
+family_id       BIGINTEGER NOT NULL REFERENCES families (id)
+family_store_id BIGINTEGER NOT NULL REFERENCES family_stores (id)
+ingredient_id   BIGINTEGER NOT NULL REFERENCES ingredients (id)
+
+----
+family_stores
+----
+id            BIGSERIAL PRIMARY KEY
+family_id     BIGINTEGER NOT NULL REFERENCES families (id)
+name          TEXT NOT NULL
+
+
+----
+ingredients
+----
+id            BIGSERIAL PRIMARY KEY
+parent_id     BIGINTEGER REFERENCES ingredients (id)
+name          TEXT NOT NULL
+is_basic      BOOLEAN NOT NULL DEFAULT FALSE
+is_public     BOOLEAN NOT NULL DEFAULT FALSE
+calories      INTEGER NULL
+protein_grams INTEGER NULL
+
+
+----
+family_dishes
+----
+id                   BIGSERIAL PRIMARY KEY
+parent_id            BIGINTEGER REFERENCES family_dishes (id)
+family_id            BIGINTEGER NOT NULL REFERENCES families (id)
+name                 TEXT NOT NULL
+description          TEXT NULL
+is_favorite          BOOLEAN NOT NULL DEFAULT FALSE
+comfort_level        SMALLINTEGER NULL
+health_level         SMALLINTEGER NULL
+cooking_difficulty   SMALLINTEGER NULL
+is_prepared_ahead    BOOLEAN NULL
+prep_time_minutes    INTEGER NULL
+cooking_time_minutes INTEGER NULL
+serving_size         TEXT NULL
+protein_grams        INTEGER NULL
+calories             INTEGER NULL
+
+
+----
+recipe_sources
+----
+id                   BIGSERIAL PRIMARY KEY
+family_id            BIGINTEGER NULL REFERENCES families (id)
+source_type          TEXT NOT NULL
+name                 TEXT NULL
+text_author          TEXT NULL
+text_edition         TEXT NULL
+website_main_url     TEXT NULL
+
+----
+family_dish_recipe_sources
+----
+id                   BIGSERIAL PRIMARY KEY
+family_id            BIGINTEGER NOT NULL REFERENCES families (id)
+family_dish_id       BIGINTEGER NOT NULL REFERENCES family_dishes (id)
+text_article_name    TEXT NULL
+text_page_number     INTEGER NULL
+website_url          TEXT NULL
+comment              TEXT NULL
+
+----
+family_dish_recipe_steps
+----
+id                   BIGSERIAL PRIMARY KEY
+family_id            BIGINTEGER NOT NULL REFERENCES families (id)
+family_dish_id       BIGINTEGER NOT NULL REFERENCES family_dishes (id)
+step_number          INTEGER NOT NULL
+description          TEXT NOT NULL
+
+----
+family_dish_make_events
+----
+id                   BIGSERIAL PRIMARY KEY
+family_id            BIGINTEGER NOT NULL REFERENCES families (id)
+family_member_id     BIGINTEGER NOT NULL REFERENCES family_members (id)
+family_dish_id       BIGINTEGER NOT NULL REFERENCES family_dishes (id)
+success_level        SMALLINTEGER NULL
+prep_time_minutes    INTEGER NULL
+cooking_time_minutes INTEGER NULL
+modification_notes   TEXT NULL
+how_it_went          TEXT NULL
+
+
+----
+family_dish_ingredients
+----
+id             BIGSERIAL PRIMARY KEY
+family_id      BIGINTEGER NOT NULL REFERENCES families (id)
+family_dish_id BIGINTEGER NOT NULL REFERENCES family_dishes (id)
+ingredient_id  BIGINTEGER NOT NULL REFERENCES ingredients (id)
+is_optional    BOOLEAN NOT NULL DEFAULT false
+amount         NUMERIC NULL
+unit           TEXT NULL
+
+
+----
+food_relationships
+----
+id                    BIGSERIAL PRIMARY KEY
+family_id             BIGINTEGER NOT NULL REFERENCES families (id)
+family_member_id      BIGINTEGER NOT NULL REFERENCES family_members (id)
+family_dish_id        BIGINTEGER NOT NULL REFERENCES family_dishes (id)
+is_favorite           BOOLEAN NOT NULL DEFAULT FALSE
+comfort_level         SMALLINTEGER NULL
+enjoyment_level       SMALLINTEGER NULL
+restriction_level     SMALLINTEGER NULL
+cooking_ability_level SMALLINTEGER NULL
+
+----
+family_member_requests (user requesting attach to family member, or requesting copy of other family's family member into family)
+----
+id                    BIGSERIAL PRIMARY KEY
+user_id               BIGINTEGER NOT NULL REFERENCES families (id)
+family_id             BIGINTEGER NOT NULL REFERENCES families (id)
+family_member_id      BIGINTEGER NOT NULL REFERENCES family_members (id)
+is_accepted           BOOLEAN NOT NULL DEFAULT FALSE
+is_copy_request       BOOLEAN NOT NULL DEFAULT FALSE
+family_accepted_at    TIMESTAMP WITH TIME ZONE NULL
+user_accepted_at      TIMESTAMP WITH TIME ZONE NULL
+
+
+Feature Priority:
+
+Family members
+Family dishes
+Ingredients
+Food relationships
+Notes
+Making food
+Recipe sources
+Recipe steps
