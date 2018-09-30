@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180922063053) do
+ActiveRecord::Schema.define(version: 20180923055931) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,9 @@ ActiveRecord::Schema.define(version: 20180922063053) do
     t.integer "protein_grams"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "vegetarian"
+    t.text "vegan"
+    t.text "gluten_free"
     t.index ["family_id"], name: "index_ingredients_on_family_id"
     t.index ["name"], name: "index_ingredients_on_name", unique: true
   end
