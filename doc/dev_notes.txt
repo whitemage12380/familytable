@@ -1,0 +1,3 @@
+Ingredients will work like tags. The interface will involve a list of ingredients, with an x next to each to allow removal.
+At the end, a text field. You type into a text field and hit enter, then it does a lookup in the database to do a text match.
+If no match, it creates the new ingredient. If there's a match, it shows all matches, plus the possibility to add a new entry.

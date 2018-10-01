@@ -218,6 +218,7 @@ Vue.component('dish-edit'
               <div class="pane_column large">
                 <input v-model="dish.name" placeholder="Dish Name" />
                 <textarea v-model="dish.description" placeholder="Description" class="form_description" />
+                <ingredient-picker></ingredient-picker>
                 <button v-on:click="save">Save</button>
               </div>
               <div class="pane_column med noborder">
@@ -255,3 +256,38 @@ Vue.component('dish-edit'
           alert("Boo")
       )
 )
+
+Vue.component('ingredient-picker'
+  props:
+    ingredients:
+      type: Array
+      default: () ->
+        return []
+  template: """
+            <div class="ingredient_picker">
+              <div v-for="ingredient in ingredients" :key="ingredient.id">{{ingredient.name}}</div>
+              <div class="ingredient_input">
+                <input v-on:keyup.enter="add_ingredient" />
+              </div>
+            </div>
+            """
+  methods:
+    add_ingredient: (event) ->
+      ingredient_name = event.target.value
+      ingredient = {name: ingredient_name}
+      that = this
+      $.ajax(
+        url: '/ingredients'
+        method: 'POST'
+        data:
+          ingredient: ingredient
+        dataType: "json"
+        success: (res) ->
+          that.ingredients.push(res)
+        error: (res) ->
+          alert("Failed on adding new ingredient")
+        )
+)
+
+#Vue.component('add_ingredient_selector'
+#)

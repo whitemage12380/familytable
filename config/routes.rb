@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :families
   resources :family_members
   resources :family_dishes
+  resources :ingredients
 
   root to: "home#index"
 
