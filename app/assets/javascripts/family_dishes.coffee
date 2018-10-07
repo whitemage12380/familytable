@@ -57,7 +57,8 @@ Vue.component('dish-browser'
   props: ["initial_dishes", "family_id"]
   data: () ->
     return {
-      dishes: this.initial_dishes
+      #dishes: this.initial_dishes
+      dishes: []
       edit: false
       selected_dish: null
       selected_dish_mode: "detail"
@@ -93,6 +94,8 @@ Vue.component('dish-browser'
               </div>
             </div>
             """
+  created: () ->
+    this.refresh(null)
   methods:
     refresh: (event) ->
       that = this
@@ -108,7 +111,7 @@ Vue.component('dish-browser'
           else
             that.unset_dish_pane()
         error: (res) ->
-          alert("Boo2")
+          alert("Failed on browser refresh")
       )
     set_dish_pane: (dish_id, mode) ->
       select_dish = (x) -> x.id == dish_id
@@ -198,6 +201,7 @@ Vue.component('dish-edit'
         return {
           name: ""
           description: ""
+          ingredients: []
           is_favorite: false
           is_prepared_ahead: false
           health_level: 0
@@ -218,7 +222,7 @@ Vue.component('dish-edit'
               <div class="pane_column large">
                 <input v-model="dish.name" placeholder="Dish Name" />
                 <textarea v-model="dish.description" placeholder="Description" class="form_description" />
-                <ingredient-picker></ingredient-picker>
+                <ingredient-picker v-bind:ingredients="dish.ingredients"></ingredient-picker>
                 <button v-on:click="save">Save</button>
               </div>
               <div class="pane_column med noborder">
@@ -244,16 +248,22 @@ Vue.component('dish-edit'
         save_url = "/family_dishes/#{this.dish.id}"
         save_method = 'PATCH'
       that = this
+      dish_payload = JSON.parse(JSON.stringify(this.dish))
+      dish_payload.family_dish_ingredients_attributes = this.dish.ingredients.map (i) -> {ingredient_id: i.id}
+      delete dish_payload.id
+      delete dish_payload.created_at
+      delete dish_payload.updated_at
+      delete dish_payload.ingredients
       $.ajax(
         url: save_url
         method: save_method
         data:
-          family_dish: this.dish
+          family_dish: dish_payload
         dataType: "json"
         success: (res) ->
           that.$emit('refresh')
         error: (res) ->
-          alert("Boo")
+          alert("Failed on saving dish")
       )
 )
 

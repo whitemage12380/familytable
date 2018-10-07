@@ -5,4 +5,5 @@ class FamilyDish < ActiveRecord::Base
   belongs_to :family
   has_many :family_dish_ingredients
   has_many :ingredients, through: :family_dish_ingredients
+  accepts_nested_attributes_for :family_dish_ingredients, allow_destroy: true
 end

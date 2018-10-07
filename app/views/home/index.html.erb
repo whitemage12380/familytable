@@ -6,7 +6,7 @@
       <family-sidebar :initial_family="<%= current_user.default_family.to_json({include: :family_members}) %>"></family-sidebar>
     </div>
     <div id="main">
-      <dish-browser :family_id="<%= current_user.default_family.id %>" :initial_dishes="<%= current_user.default_family.family_dishes.to_json() %>"></dish-browser>
+      <dish-browser :family_id="<%= current_user.default_family.id %>"></dish-browser>
     </div>
     <div class="clear"></div>
   </div>

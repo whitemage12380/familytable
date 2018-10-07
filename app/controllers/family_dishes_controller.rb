@@ -8,10 +8,13 @@ class FamilyDishesController < ApplicationController
       @family_dishes = FamilyDish.includes(:ingredients).where(family_id: params[:family_id])
     else
       @family_dishes = FamilyDish.includes(:ingredients).all
+      #@family_dishes = FamilyDish.eager_load(:ingredients).all
+      #@family_dishes = FamilyDish.eager_load(:family_dish_ingredients).eager_load(:ingredients).all
     end
     respond_to do |format|
       format.html
-      format.json { render :json => @family_dishes }
+      #format.json { render :json => @family_dishes  }
+      format.json { render :json => @family_dishes.to_json( include: [:ingredients] ) }
     end
   end
 
@@ -53,6 +56,9 @@ class FamilyDishesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def family_dish_params
-      params.require(:family_dish).permit(:parent_id,:family_id,:name,:description,:is_favorite,:comfort_level,:health_level,:cooking_difficulty,:is_prepared_ahead,:prep_time_minutes,:cooking_time_minutes,:serving_size,:protein_grams,:calories)
+      params.require(:family_dish).permit(:parent_id,:family_id,:name,:description,:is_favorite,:comfort_level,:health_level,:cooking_difficulty,:is_prepared_ahead,:prep_time_minutes,:cooking_time_minutes,:serving_size,:protein_grams,:calories,
+      family_dish_ingredients_attributes: [:ingredient_id],
+      ingredients: [:id, :name, :parent_id, :family_id, :is_basic, :is_public, :serving_size, :calories, :protein_grams, :vegetarian, :vegan, :gluten_free, :_destroy])
+
     end
 end
