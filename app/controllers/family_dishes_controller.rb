@@ -6,36 +6,12 @@ class FamilyDishesController < ApplicationController
   def index
     if params[:family_id] != nil
       @family_dishes = FamilyDish.includes(:ingredients).where(family_id: params[:family_id])
-      #@family_dishes = FamilyDish.includes(family_dish_ingredients: [:ingredient]).where(family_id: params[:family_id])
-      #@family_dishes = FamilyDish.includes(:family_dish_ingredients).includes(:ingredients).where(family_id: params[:family_id])
-      #@family_dishes = FamilyDish.includes(:family_dish_ingredients).where(family_id: params[:family_id])
     else
       @family_dishes = FamilyDish.includes(:ingredients).all
-      #@family_dishes = FamilyDish.includes(:family_dish_ingredients).all
-      #@family_dishes = FamilyDish.eager_load(:ingredients).all
-      #@family_dishes = FamilyDish.eager_load(:family_dish_ingredients).eager_load(:ingredients).all
     end
-    #@family_dishes.each { |dish|
-      #dish.family_dish_ingredients.each { |fdi| 
-      #  fdi.ingredient = dish.ingredients.select { |ingredient| fdi.ingredient_id == ingredient.id }.first
-      #  logger.debug "Ingredient: #{fdi.ingredient.to_json}"
-      #}
-    #  dish["my_ingredients"] = dish.ingredients.map { |ingredient| Ingredient.new(ingredient.to_h.merge(dish.family_dish_ingredients.select { |fdi| fdi.ingredient_id == ingredient.id }.first.to_h)) }
-      #dish.ingredients.each { |ingredient|
-      #  ingredient.merge(dish.family_dish_ingredients.select { |fdi| fdi.ingredient_id == ingredient.id }.first)
-
-        #ingredient.ingredient_id = ingredient.id
-        #family_dish_ingredient = dish.family_dish_ingredients.select { |fdi| fdi.ingredient_id == ingredient.ingredient_id }.first
-        #ingredient.id = family_dish_ingredient.id
-        #ingredient.relationship = family_dish_ingredient.relationship
-      #}
-    #}
     respond_to do |format|
       format.html
-      #format.json { render :json => @family_dishes  }
-      #format.json { render :json => @family_dishes.to_json( include: [{:family_dish_ingredients => {:include => [:ingredient]}}] ) }
-      #format.json { render :json => @family_dishes.to_json( include: {family_dish_ingredients: {include: [:ingredient]}} ) }
-      format.json { render :json => @family_dishes, include: {family_dish_ingredients: {include: [:ingredient]}} }
+      format.json { render :json => @family_dishes, include: {family_dish_ingredients: {include: :ingredient}} }
     end
   end
 

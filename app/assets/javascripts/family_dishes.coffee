@@ -249,10 +249,7 @@ Vue.component('dish-edit'
         save_url = "/family_dishes/#{this.dish.id}"
         save_method = 'PATCH'
       dish_payload = JSON.parse(JSON.stringify(this.dish))
-      dish_payload.family_dish_ingredients_attributes = this.dish.family_dish_ingredients.map (i) -> 
-        obj = {ingredient_id: i.ingredient.id, id: i.id}
-        #obj.id = i.id if "id" in i
-        obj
+      dish_payload.family_dish_ingredients_attributes = this.dish.family_dish_ingredients.map (i) -> {ingredient_id: i.ingredient.id, id: i.id}
       delete dish_payload.id
       delete dish_payload.created_at
       delete dish_payload.updated_at
