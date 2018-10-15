@@ -201,7 +201,8 @@ Vue.component('dish-edit'
         return {
           name: ""
           description: ""
-          ingredients: []
+          family_dish_ingredients: []
+          #ingredients: []
           is_favorite: false
           is_prepared_ahead: false
           health_level: 0
@@ -222,7 +223,7 @@ Vue.component('dish-edit'
               <div class="pane_column large">
                 <input v-model="dish.name" placeholder="Dish Name" />
                 <textarea v-model="dish.description" placeholder="Description" class="form_description" />
-                <ingredient-picker v-bind:ingredients="dish.ingredients"></ingredient-picker>
+                <ingredient-picker v-bind:family_dish_ingredients="dish.family_dish_ingredients"></ingredient-picker>
                 <button v-on:click="save">Save</button>
               </div>
               <div class="pane_column med noborder">
@@ -247,13 +248,17 @@ Vue.component('dish-edit'
       else
         save_url = "/family_dishes/#{this.dish.id}"
         save_method = 'PATCH'
-      that = this
       dish_payload = JSON.parse(JSON.stringify(this.dish))
-      dish_payload.family_dish_ingredients_attributes = this.dish.ingredients.map (i) -> {ingredient_id: i.id}
+      dish_payload.family_dish_ingredients_attributes = this.dish.family_dish_ingredients.map (i) -> 
+        obj = {ingredient_id: i.ingredient.id, id: i.id}
+        #obj.id = i.id if "id" in i
+        obj
       delete dish_payload.id
       delete dish_payload.created_at
       delete dish_payload.updated_at
-      delete dish_payload.ingredients
+      delete dish_payload.family_dish_ingredients
+
+      that = this
       $.ajax(
         url: save_url
         method: save_method
@@ -269,13 +274,15 @@ Vue.component('dish-edit'
 
 Vue.component('ingredient-picker'
   props:
-    ingredients:
+    family_dish_ingredients:
       type: Array
       default: () ->
         return []
   template: """
             <div class="ingredient_picker">
-              <div v-for="ingredient in ingredients" :key="ingredient.id">{{ingredient.name}}</div>
+              <div class="ingredient_list">
+                <div class="tag" v-for="family_dish_ingredient in family_dish_ingredients" :key="family_dish_ingredient.id">{{family_dish_ingredient.ingredient.name}}</div>
+              </div>
               <div class="ingredient_input">
                 <input v-on:keyup.enter="add_ingredient" />
               </div>
@@ -293,7 +300,7 @@ Vue.component('ingredient-picker'
           ingredient: ingredient
         dataType: "json"
         success: (res) ->
-          that.ingredients.push(res)
+          that.family_dish_ingredients.push({relationship: "primary", ingredient: res})
         error: (res) ->
           alert("Failed on adding new ingredient")
         )
