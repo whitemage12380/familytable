@@ -168,6 +168,12 @@ Vue.component('dish-detail'
               <div class="pane_column large">
                 <h2>{{ dish.name }}</h2>
                 <p>{{ dish.description }}</p>
+                <div v-if="dish.family_dish_ingredients.length > 0">
+                  <h5>Ingredients</h5>
+                  <div class="ingredient_list">
+                    <div class="tag" v-for="family_dish_ingredient in dish.family_dish_ingredients" :key="family_dish_ingredient.id">{{family_dish_ingredient.ingredient.name}}</div>
+                  </div>
+                </div>
               </div>
               <div class="pane_column med noborder">
                 <dot-gauge v-if="dish.cooking_difficulty > 0" v-bind:is_input="false" v-bind:initial_value="dish.cooking_difficulty">Difficulty</dot-gauge>
