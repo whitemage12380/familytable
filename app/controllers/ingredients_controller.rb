@@ -24,7 +24,8 @@ class IngredientsController < ApplicationController
   # POST /ingredients
   # POST /ingredients.json
   def create
-    @ingredient = Ingredient.new(ingredient_params)
+    #@ingredient = Ingredient.new(ingredient_params)
+    @ingredient = Ingredient.create_with(ingredient_params).find_or_create_by(name: ingredient_params[:name])
 
     respond_to do |format|
       if @ingredient.save
