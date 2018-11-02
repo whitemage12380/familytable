@@ -281,13 +281,15 @@ Vue.component('ingredient-picker'
       type: Array
       default: () ->
         return []
+  data: () ->
+    return input_text: ""
   template: """
             <div class="ingredient_picker">
               <div class="ingredient_list">
                 <div class="tag" v-for="family_dish_ingredient in family_dish_ingredients" :key="family_dish_ingredient.id">{{family_dish_ingredient.ingredient.name}}</div>
               </div>
               <div class="ingredient_input">
-                <input v-on:keyup.enter="add_ingredient" />
+                <input v-model="input_text" v-on:keyup.enter="add_ingredient" />
               </div>
             </div>
             """
@@ -304,6 +306,7 @@ Vue.component('ingredient-picker'
         dataType: "json"
         success: (res) ->
           that.family_dish_ingredients.push({relationship: "primary", ingredient: res})
+          that.input_text = ""
         error: (res) ->
           alert("Failed on adding new ingredient")
         )
