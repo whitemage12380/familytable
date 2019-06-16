@@ -15,5 +15,4 @@
 //= require jquery-ui/datepicker
 //= require vue
 
-//= require .//mixins
 //= require_tree .

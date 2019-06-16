@@ -170,7 +170,7 @@ body {
   box-sizing: border-box;
   padding: 0.5em 1em;
   width: calc(100% - 10em);
-  overflow: hidden;
+  //overflow: hidden;
 
   h1 {
     border: 1px solid black;
@@ -199,6 +199,9 @@ body {
 
 .detail_section {
   float: right;
+  //position: relative;
+  position: sticky;
+  top: 0;
   width: 40%;
   box-sizing: border-box;
   padding: 0 1em;
