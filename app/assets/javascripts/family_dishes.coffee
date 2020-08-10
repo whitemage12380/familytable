@@ -67,30 +67,33 @@ Vue.component('dish-browser'
             <div id='family_dish_browser'>
               <div class='dish_top_bar'>
                 <div class='left small button' v-on:click="set_dish_new">New Dish</div>
+                <div class="clear"></div>
               </div>
+              <div class='content'>
+                <div class="list_section">
+                  <div class='dish_list'>
+                    <dish-entry v-for="dish in dishes" :key="dish.id" v-bind:dish="dish" v-on:select="set_dish_detail" v-on:edit="set_dish_edit"></dish-entry>
+                  </div>
+                </div>
+                <div class="detail_section">
+                  <dish-detail    v-if="selected_dish != null && selected_dish_mode == 'detail'" v-bind:dish="selected_dish"
+                                                                                                 v-on:edit="set_dish_edit">
+                                                                                                 </dish-detail>
+                  <dish-edit v-else-if="selected_dish != null && selected_dish_mode == 'edit'"   v-bind:dish="selected_dish" 
+                                                                                                 v-bind:family_id="family_id"
+                                                                                                 v-on:refresh="refresh"
+                                                                                                 v-on:cancel="set_dish_detail">
+                                                                                                 </dish-edit>
+                  <dish-edit v-else-if="selected_dish_mode == 'new'"                             v-bind:new_dish="true"
+                                                                                                 v-bind:family_id="family_id"
+                                                                                                 v-on:refresh="refresh"
+                                                                                                 v-on:cancel="unset_dish_pane">
+                                                                                                 </dish-edit>
+                  <div v-else class="align-center">
+                    Select a dish to view details.
+                  </div>
+                </div>
               <div class="clear"></div>
-              <div class="list_section">
-                <div class='dish_list'>
-                  <dish-entry v-for="dish in dishes" :key="dish.id" v-bind:dish="dish" v-on:select="set_dish_detail" v-on:edit="set_dish_edit"></dish-entry>
-                </div>
-              </div>
-              <div class="detail_section">
-                <dish-detail    v-if="selected_dish != null && selected_dish_mode == 'detail'" v-bind:dish="selected_dish"
-                                                                                               v-on:edit="set_dish_edit">
-                                                                                               </dish-detail>
-                <dish-edit v-else-if="selected_dish != null && selected_dish_mode == 'edit'"   v-bind:dish="selected_dish" 
-                                                                                               v-bind:family_id="family_id"
-                                                                                               v-on:refresh="refresh"
-                                                                                               v-on:cancel="set_dish_detail">
-                                                                                               </dish-edit>
-                <dish-edit v-else-if="selected_dish_mode == 'new'"                             v-bind:new_dish="true"
-                                                                                               v-bind:family_id="family_id"
-                                                                                               v-on:refresh="refresh"
-                                                                                               v-on:cancel="unset_dish_pane">
-                                                                                               </dish-edit>
-                <div v-else class="align-center">
-                  Select a dish to view details.
-                </div>
               </div>
             </div>
             """
