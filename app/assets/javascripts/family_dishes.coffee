@@ -79,7 +79,7 @@ Vue.component('dish-browser'
                   <dish-detail    v-if="selected_dish != null && selected_dish_mode == 'detail'" v-bind:dish="selected_dish"
                                                                                                  v-on:edit="set_dish_edit">
                                                                                                  </dish-detail>
-                  <dish-edit v-else-if="selected_dish != null && selected_dish_mode == 'edit'"   v-bind:dish="selected_dish" 
+                  <dish-edit v-else-if="selected_dish != null && selected_dish_mode == 'edit'"   v-bind:dish="selected_dish"
                                                                                                  v-bind:family_id="family_id"
                                                                                                  v-on:refresh="refresh"
                                                                                                  v-on:cancel="set_dish_detail">

@@ -144,7 +144,7 @@ unit           TEXT NULL
 
 
 ----
-food_relationships
+family_member_dishes
 ----
 id                    BIGSERIAL PRIMARY KEY
 family_id             BIGINTEGER NOT NULL REFERENCES families (id)
@@ -155,6 +155,7 @@ comfort_level         SMALLINTEGER NULL
 enjoyment_level       SMALLINTEGER NULL
 restriction_level     SMALLINTEGER NULL
 cooking_ability_level SMALLINTEGER NULL
+note                  TEXT NULL
 
 ----
 family_member_requests (user requesting attach to family member, or requesting copy of other family's family member into family)

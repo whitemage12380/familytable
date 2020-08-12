@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180923055931) do
+ActiveRecord::Schema.define(version: 20200810065838) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,22 @@ ActiveRecord::Schema.define(version: 20180923055931) do
     t.index ["family_id"], name: "index_family_dishes_on_family_id"
   end
 
+  create_table "family_member_dishes", force: :cascade do |t|
+    t.bigint "family_id", null: false
+    t.bigint "family_member_id", null: false
+    t.bigint "family_dish_id", null: false
+    t.boolean "is_favorite", default: false, null: false
+    t.integer "comfort_level", limit: 2
+    t.integer "enjoyment_level", limit: 2
+    t.integer "cooking_ability_level", limit: 2
+    t.text "note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["family_dish_id"], name: "index_family_member_dishes_on_family_dish_id"
+    t.index ["family_id"], name: "index_family_member_dishes_on_family_id"
+    t.index ["family_member_id"], name: "index_family_member_dishes_on_family_member_id"
+  end
+
   create_table "family_members", force: :cascade do |t|
     t.integer "family_id", null: false
     t.integer "user_id"
@@ -62,6 +78,7 @@ ActiveRecord::Schema.define(version: 20180923055931) do
     t.boolean "is_guest", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "can_cook", default: true, null: false
   end
 
   create_table "ingredients", force: :cascade do |t|
@@ -125,6 +142,9 @@ ActiveRecord::Schema.define(version: 20180923055931) do
   add_foreign_key "family_dish_ingredients", "ingredients"
   add_foreign_key "family_dishes", "families"
   add_foreign_key "family_dishes", "family_dishes", column: "parent_id"
+  add_foreign_key "family_member_dishes", "families"
+  add_foreign_key "family_member_dishes", "family_dishes"
+  add_foreign_key "family_member_dishes", "family_members"
   add_foreign_key "family_members", "families"
   add_foreign_key "family_members", "users"
   add_foreign_key "ingredients", "families"
