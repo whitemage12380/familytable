@@ -109,6 +109,7 @@ Vue.component('dish-browser'
         dataType: "json"
         success: (res) ->
           that.dishes = res
+          console.log(that.dishes)
           if that.selected_dish_mode == "edit"
             that.selected_dish_mode = "detail"
           else
@@ -167,36 +168,37 @@ Vue.component('dish-detail'
   props: ["dish"]
   template: """
             <div class="detail_pane">
-              <div class="pane_control" v-on:click="$emit('edit', dish.id)">E</div>
-              <div class="pane_column large">
+              <div class="pane_content">
+                <div class="pane_control" v-on:click="$emit('edit', dish.id)">E</div>
+
+                <div class="pane_info_section">
+                  <dot-gauge v-if="dish.cooking_difficulty > 0" v-bind:is_input="false" v-bind:initial_value="dish.cooking_difficulty">Difficulty</dot-gauge>
+                    <dot-gauge v-if="dish.health_level > 0" v-bind:is_input="false" v-bind:initial_value="dish.health_level">Health</dot-gauge>
+                    <dot-gauge v-if="dish.comfort_level > 0" v-bind:is_input="false" v-bind:initial_value="dish.comfort_level">Comfort</dot-gauge>
+                    <div class="clear"></div>
+                    <div v-if="dish.prep_time_minutes > 0">
+                      <h5>Preparation Time</h5>
+                      <p>{{ minutes_to_natural(dish.prep_time_minutes) }}</p>
+                    </div>
+                    <div v-if="dish.cooking_time_minutes > 0">
+                      <h5>Cooking Time</h5>
+                      <p>{{ minutes_to_natural(dish.cooking_time_minutes) }}</p>
+                    </div>
+                    <div v-if="dish.prep_time_minutes > 0 && dish.cooking_time_minutes > 0">
+                      <h5>Total Time</h5>
+                      <p>{{ minutes_to_natural(dish.prep_time_minutes + dish.cooking_time_minutes) }}</p>
+                    </div>
+                </div>
                 <h2>{{ dish.name }}</h2>
                 <p>{{ dish.description }}</p>
                 <div v-if="dish.family_dish_ingredients.length > 0">
                   <h5>Ingredients</h5>
                   <div class="ingredient_list">
                     <div class="tag" v-for="family_dish_ingredient in dish.family_dish_ingredients" :key="family_dish_ingredient.id">{{family_dish_ingredient.ingredient.name}}</div>
+                    <div class="clear"></div>
                   </div>
                 </div>
               </div>
-              <div class="pane_column med noborder">
-                <dot-gauge v-if="dish.cooking_difficulty > 0" v-bind:is_input="false" v-bind:initial_value="dish.cooking_difficulty">Difficulty</dot-gauge>
-                <dot-gauge v-if="dish.health_level > 0"       v-bind:is_input="false" v-bind:initial_value="dish.health_level">Health</dot-gauge>
-                <dot-gauge v-if="dish.comfort_level > 0"      v-bind:is_input="false" v-bind:initial_value="dish.comfort_level">Comfort</dot-gauge>
-                <div class="clear"></div>
-                <div v-if="dish.prep_time_minutes > 0">
-                  <h5>Preparation Time</h5>
-                  <p>{{ minutes_to_natural(dish.prep_time_minutes) }}</p>
-                </div>
-                <div v-if="dish.cooking_time_minutes > 0">
-                  <h5>Cooking Time</h5>
-                  <p>{{ minutes_to_natural(dish.cooking_time_minutes) }}</p>
-                </div>
-                <div v-if="dish.prep_time_minutes > 0 && dish.cooking_time_minutes > 0">
-                  <h5>Total Time</h5>
-                  <p>{{ minutes_to_natural(dish.prep_time_minutes + dish.cooking_time_minutes) }}</p>
-                </div>
-              </div>
-              <div class="clear"></div>
             </div>
             """
 )
@@ -211,6 +213,7 @@ Vue.component('dish-edit'
           name: ""
           description: ""
           family_dish_ingredients: []
+          family_member_dishes: []
           is_favorite: false
           is_prepared_ahead: false
           health_level: 0
@@ -228,13 +231,14 @@ Vue.component('dish-edit'
   template: """
             <div class="edit_pane">
               <div class="pane_control" v-on:click="$emit('cancel', dish.id)">B</div>
-              <div class="pane_column large">
+              <div class="pane_column twothirds">
                 <input v-model="dish.name" placeholder="Dish Name" />
                 <textarea v-model="dish.description" placeholder="Description" class="form_description" />
+                <h5>Ingredients</h5>
                 <ingredient-picker v-bind:family_dish_ingredients="dish.family_dish_ingredients"></ingredient-picker>
                 <button v-on:click="save">Save</button>
               </div>
-              <div class="pane_column med noborder">
+              <div class="pane_column third">
                 <dot-gauge v-bind:initial_value="dish.cooking_difficulty" v-model="dish.cooking_difficulty">Difficulty</dot-gauge>
                 <dot-gauge v-bind:initial_value="dish.health_level" v-model="dish.health_level">Health</dot-gauge>
                 <dot-gauge v-bind:initial_value="dish.comfort_level" v-model="dish.comfort_level">Comfort</dot-gauge>
@@ -245,10 +249,14 @@ Vue.component('dish-edit'
                 <input v-once v-bind:value="minutes_to_natural(dish.cooking_time_minutes)" v-on:input="dish.cooking_time_minutes = natural_to_minutes($event.target.value)" />
               </div>
               <div class="clear"></div>
+              <div v-for="family_member_dish in dish.family_member_dishes" :key="family_member_dish.id">
+                {{family_member_dish.family_member.first_name}}
+              </div>
             </div>
             """
   methods:
     save: (event) ->
+      console.log(this.dish.family_member_dishes.length)
       if this.new_dish
         save_url = '/family_dishes'
         save_method = 'POST'

@@ -29,6 +29,7 @@ $main_col_pad: 1em;
 .large {width: 30em !important; }
 .third {width: 30% !important;}
 .half {width: 50% !important;}
+.twothirds {width: 70% !important;}
 .most {width: 80% !important;}
 .full {width: 100% !important;}
 
@@ -227,10 +228,26 @@ body {
   clear: both;
 }
 
+.pane_content {
+  padding: 1em;
+
+  input, textarea {
+    width: 90%;
+    margin-bottom: 1em;
+  }
+}
+
 .pane_column {
   float: left;
   padding: 1em;
-  border-right: 1px solid #204A34;
+  box-sizing: border-box;
+  # border-right: 1px solid #204A34;
+}
+
+.pane_info_section {
+  float: right;
+  width: 15em;
+  padding: 1em;
 }
 
 .pane_control {
@@ -247,6 +264,7 @@ body {
 .edit_pane {
   background-color: #90D4B1;
   .pane_column {
+    // Deprecated
     input, textarea {
       width: 90%;
       margin-bottom: 1em;

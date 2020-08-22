@@ -5,13 +5,16 @@ class FamilyDishesController < ApplicationController
   # GET /family_dishes.json
   def index
     if params[:family_id] != nil
-      @family_dishes = FamilyDish.includes(:ingredients).where(family_id: params[:family_id])
+      @family_dishes = FamilyDish.includes(:ingredients).includes(:family_members).where(family_id: params[:family_id])
     else
-      @family_dishes = FamilyDish.includes(:ingredients).all
+      @family_dishes = FamilyDish.includes(:ingredients).includes(:family_members).all
     end
+    puts @family_dishes.select { |fd| not fd.family_member_dishes.nil?}.collect { |fd| fd.family_member_dishes.collect {|fmd| fmd.note}}
     respond_to do |format|
       format.html
-      format.json { render :json => @family_dishes, include: {family_dish_ingredients: {include: :ingredient}} }
+      format.json { render :json => @family_dishes,
+        include: {family_dish_ingredients: {include: :ingredient}, family_member_dishes: {include: :family_member}}
+      }
     end
   end
 
@@ -55,7 +58,9 @@ class FamilyDishesController < ApplicationController
     def family_dish_params
       params.require(:family_dish).permit(:parent_id,:family_id,:name,:description,:is_favorite,:comfort_level,:health_level,:cooking_difficulty,:is_prepared_ahead,:prep_time_minutes,:cooking_time_minutes,:serving_size,:protein_grams,:calories,
       family_dish_ingredients_attributes: [:id, :ingredient_id, :relationship],
-      ingredients: [:id, :name, :parent_id, :family_id, :is_basic, :is_public, :serving_size, :calories, :protein_grams, :vegetarian, :vegan, :gluten_free, :_destroy])
+      ingredients: [:id, :name, :parent_id, :family_id, :is_basic, :is_public, :serving_size, :calories, :protein_grams, :vegetarian, :vegan, :gluten_free, :_destroy],
+      family_member_dishes_attributes: [:id, :family_member_id, :is_favorite, :comfort_level, :enjoyment_level, :cooking_ability_level, :note],
+      family_members: [:id, :family_id, :user_id, :first_name, :last_name, :can_cook, :is_guest])
 
     end
 end
