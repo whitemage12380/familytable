@@ -249,14 +249,13 @@ Vue.component('dish-edit'
                 <input v-once v-bind:value="minutes_to_natural(dish.cooking_time_minutes)" v-on:input="dish.cooking_time_minutes = natural_to_minutes($event.target.value)" />
               </div>
               <div class="clear"></div>
-              <div v-for="family_member_dish in dish.family_member_dishes" :key="family_member_dish.id">
-                {{family_member_dish.family_member.first_name}}
-              </div>
+              <family-member-dish-edit v-bind:initial_family_member_opinions="dish.family_member_dishes"
+                                       v-bind:initial_family_id="family_id" 
+                                       v-model:family_member_opinions="dish.family_member_dishes" />
             </div>
             """
   methods:
     save: (event) ->
-      console.log(this.dish.family_member_dishes.length)
       if this.new_dish
         save_url = '/family_dishes'
         save_method = 'POST'
@@ -266,11 +265,23 @@ Vue.component('dish-edit'
         save_method = 'PATCH'
       dish_payload = JSON.parse(JSON.stringify(this.dish))
       dish_payload.family_dish_ingredients_attributes = this.dish.family_dish_ingredients.map (i) -> {ingredient_id: i.ingredient.id, id: i.id, relationship: i.relationship}
+      dish_payload.family_member_dishes_attributes = this.dish.family_member_dishes.map (i) -> {
+        id: i.id
+        family_id: i.family_id
+        family_member_id: i.family_member.id
+        is_favorite: i.is_favorite
+        comfort_level: i.comfort_level
+        enjoyment_level: i.enjoyment_level
+        cooking_ability_level: i.cooking_ability_level
+        note: i.note
+      }
       delete dish_payload.id
       delete dish_payload.created_at
       delete dish_payload.updated_at
       delete dish_payload.family_dish_ingredients
-
+      delete dish_payload.family_member_dishes
+      console.log("Saving dish:")
+      console.log(this.dish)
       that = this
       $.ajax(
         url: save_url
@@ -320,6 +331,108 @@ Vue.component('ingredient-picker'
         error: (res) ->
           alert("Failed on adding new ingredient")
         )
+)
+
+Vue.component('family-member-dish-edit'
+  props:
+    initial_family_member_opinions:
+      type: Array
+      default: () ->
+        return []
+    initial_family_id:
+      type: Number
+  data: () ->
+    return {
+      family_id: this.initial_family_id
+      family_member_opinions: this.initial_family_member_opinions
+      family_members: []
+      unselected_family_members: []
+    }
+  template: """
+            <div class="family_member_dishes_section">
+              <family-member-picker v-bind:family_members="this.unselected_family_members"
+                                    v-model:family_members="this.unselected_family_members"
+                                    v-on:input="select_family_member" />
+              <family-member-opinion-form v-for="(family_member_opinion, index) in this.family_member_opinions"
+                                          :key="family_member_opinion.id"
+                                          v-bind:family_member_opinion="family_member_opinions[index]"
+                                          v-model:family_member_opinion="family_member_opinions[index]"
+              />
+            </div>
+            """
+  created: () ->
+    this.get_family_members()
+  methods:
+    get_family_members: ->
+      that = this
+      $.ajax(
+        url: "/family_members"
+        data:
+          family_id: that.family_id
+        dataType: "json"
+        success: (res) ->
+          that.family_members = res
+          that.unselected_family_members = that.family_members.filter (fm) ->
+            not that.family_member_opinions.some (fmo) => fmo.family_member.id == fm.id
+        error: (res) ->
+          alert("Failed to get family members")
+      )
+    select_family_member: (selected_family_member) ->
+      family_member_opinion = {
+        family_id: this.family_id
+        family_member: selected_family_member
+      }
+      this.family_member_opinions.push family_member_opinion
+      this.unselected_family_members.splice this.unselected_family_members.indexOf(selected_family_member), 1
+
+)
+
+Vue.component('family-member-picker'
+  props:
+    family_members:
+      type: Array
+      default: () ->
+        return []
+  template: """
+            <div class="family_member_picker">
+              <family-member-circle v-for="family_member in this.family_members" :key="family_member.id"
+                                    v-on:click="select(family_member)"
+                                    v-bind:first_name="family_member.first_name"
+              />
+              <div class="clear"></div>
+            </div>
+            """
+  methods:
+    select: (family_member) ->
+      this.$emit('input', family_member)
+)
+
+Vue.component('family-member-opinion-form'
+  props:
+    family_member_opinion:
+      type: Object
+      required: true
+  template: """
+            <div class="family_member_opinion_form">
+              <family-member-circle v-bind:first_name="this.family_member_opinion.family_member.first_name" />
+              <textarea v-model="family_member_opinion.note" placeholder="Add notes here" />
+              <div class="clear"></div>
+            </div>
+            """
+)
+
+Vue.component('family-member-circle'
+  props: ['first_name']
+  template: """
+            <div class="profile_image_circle" v-on:click="click">
+              {{this.first_letter()}}
+            </div>
+            """
+  methods:
+    first_letter: () ->
+      this.first_name[0]
+    click: () ->
+      this.$emit('click')
 )
 
 #Vue.component('add_ingredient_selector'

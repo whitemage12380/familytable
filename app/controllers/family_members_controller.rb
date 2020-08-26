@@ -4,7 +4,11 @@ class FamilyMembersController < ApplicationController
   # GET /family_members
   # GET /family_members.json
   def index
-    @family_members = FamilyMember.all
+    if params[:family_id] != nil
+      @family_members = FamilyMember.where(family_id: params[:family_id])
+    else
+      @family_members = FamilyMember.all
+    end
     respond_to do |format|
       format.html
       format.json { render :json => @family_members }

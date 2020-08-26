@@ -18,7 +18,7 @@
 
     .family_member_sidebar_entry {
       position: relative;
-      height: 4em;
+      height: 52px;
       margin: 0.2em;
       padding: 0.1em;
       border-radius: 1em;
@@ -36,9 +36,14 @@
 
 .profile_image_circle {
   float: left;
-  width: 4em;
-  height: 4em;
-  border-radius: 4em;
+  display: block;
+  overflow: hidden;
+  width: 52px;
+  height: 52px;
+  border-radius: 52px;
   margin-left: 0.2em;
   background-color: white;
+  text-align: center;
+  line-height: 52px;
+  font-size: 2em;
 }
