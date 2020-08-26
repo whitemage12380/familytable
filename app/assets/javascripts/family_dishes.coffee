@@ -236,7 +236,6 @@ Vue.component('dish-edit'
                 <textarea v-model="dish.description" placeholder="Description" class="form_description" />
                 <h5>Ingredients</h5>
                 <ingredient-picker v-bind:family_dish_ingredients="dish.family_dish_ingredients"></ingredient-picker>
-                <button v-on:click="save">Save</button>
               </div>
               <div class="pane_column third">
                 <dot-gauge v-bind:initial_value="dish.cooking_difficulty" v-model="dish.cooking_difficulty">Difficulty</dot-gauge>
@@ -249,9 +248,14 @@ Vue.component('dish-edit'
                 <input v-once v-bind:value="minutes_to_natural(dish.cooking_time_minutes)" v-on:input="dish.cooking_time_minutes = natural_to_minutes($event.target.value)" />
               </div>
               <div class="clear"></div>
-              <family-member-dish-edit v-bind:initial_family_member_opinions="dish.family_member_dishes"
-                                       v-bind:initial_family_id="family_id" 
-                                       v-model:family_member_opinions="dish.family_member_dishes" />
+              <div class="pane_column full">
+              <h5>Family Member Opinions</h5>
+                <family-member-dish-edit v-bind:initial_family_member_opinions="dish.family_member_dishes"
+                                         v-bind:initial_family_id="family_id" 
+                                         v-model:family_member_opinions="dish.family_member_dishes" />
+                <button v-on:click="save">Save</button>
+              </div>
+              <div class="clear"></div>
             </div>
             """
   methods:
@@ -387,26 +391,6 @@ Vue.component('family-member-dish-edit'
 
 )
 
-Vue.component('family-member-picker'
-  props:
-    family_members:
-      type: Array
-      default: () ->
-        return []
-  template: """
-            <div class="family_member_picker">
-              <family-member-circle v-for="family_member in this.family_members" :key="family_member.id"
-                                    v-on:click="select(family_member)"
-                                    v-bind:first_name="family_member.first_name"
-              />
-              <div class="clear"></div>
-            </div>
-            """
-  methods:
-    select: (family_member) ->
-      this.$emit('input', family_member)
-)
-
 Vue.component('family-member-opinion-form'
   props:
     family_member_opinion:
@@ -414,25 +398,15 @@ Vue.component('family-member-opinion-form'
       required: true
   template: """
             <div class="family_member_opinion_form">
-              <family-member-circle v-bind:first_name="this.family_member_opinion.family_member.first_name" />
-              <textarea v-model="family_member_opinion.note" placeholder="Add notes here" />
+              <div class="opinion_form_left">
+                <family-member-circle v-bind:first_name="this.family_member_opinion.family_member.first_name" />
+              </div>
+              <div class="opinion_form_right">
+                <textarea v-model="family_member_opinion.note" placeholder="Add notes here" />
+              </div>
               <div class="clear"></div>
             </div>
             """
-)
-
-Vue.component('family-member-circle'
-  props: ['first_name']
-  template: """
-            <div class="profile_image_circle" v-on:click="click">
-              {{this.first_letter()}}
-            </div>
-            """
-  methods:
-    first_letter: () ->
-      this.first_name[0]
-    click: () ->
-      this.$emit('click')
 )
 
 #Vue.component('add_ingredient_selector'

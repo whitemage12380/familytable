@@ -43,6 +43,19 @@
   }
 }
 
+.family_member_opinion_form {
+  margin: 4px;
+  display: flex;
+
+  .opinion_form_left {
+    flex-grow: 0;
+    width: 120px;
+  }
+  .opinion_form_right {
+    flex-grow: 1;
+  }
+}
+
 .form_description {
   min-height: 8em;
 }

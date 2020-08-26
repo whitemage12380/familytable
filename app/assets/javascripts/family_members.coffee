@@ -9,7 +9,7 @@ Vue.component('family-member-entry'
   template: """
             <div class="family_member_sidebar_entry">
               <div v-on:click="toggle_edit_pane">
-                <div class="profile_image_circle"></div>
+                <family-member-circle v-bind:first_name="family_member.first_name" />
                 <div class="sidebar_entry_name">{{ family_member.first_name }}</div>
               </div>
             <family-member-edit v-bind:family_member="family_member" v-if="edit"></family-member-edit>
@@ -61,5 +61,38 @@ Vue.component('family-member-edit'
         error: (res) ->
           alert("Boo")
       )
+)
 
+Vue.component('family-member-picker'
+  props:
+    family_members:
+      type: Array
+      default: () ->
+        return []
+  template: """
+            <div class="family_member_picker">
+              <family-member-circle v-for="family_member in this.family_members" :key="family_member.id"
+                                    v-on:click="select(family_member)"
+                                    v-bind:first_name="family_member.first_name"
+              />
+              <div class="clear"></div>
+            </div>
+            """
+  methods:
+    select: (family_member) ->
+      this.$emit('input', family_member)
+)
+
+Vue.component('family-member-circle'
+  props: ['first_name']
+  template: """
+            <div class="profile_image_circle" v-bind:title="first_name" v-on:click="click">
+              {{this.first_letter()}}
+            </div>
+            """
+  methods:
+    first_letter: () ->
+      this.first_name[0]
+    click: () ->
+      this.$emit('click')
 )
