@@ -198,6 +198,14 @@ Vue.component('dish-detail'
                     <div class="clear"></div>
                   </div>
                 </div>
+                <div v-if="dish.family_member_dishes.length > 0">
+                  <h5>Family Member Opinions</h5>
+                  <family-member-opinion v-for="(family_member_opinion, index) in dish.family_member_dishes"
+                                          :key="family_member_opinion.id"
+                                          :is_input="false"
+                                          v-bind:family_member_opinion="dish.family_member_dishes[index]"
+                  />
+                </div>
               </div>
             </div>
             """
@@ -357,8 +365,9 @@ Vue.component('family-member-dish-edit'
               <family-member-picker v-bind:family_members="this.unselected_family_members"
                                     v-model:family_members="this.unselected_family_members"
                                     v-on:input="select_family_member" />
-              <family-member-opinion-form v-for="(family_member_opinion, index) in this.family_member_opinions"
+              <family-member-opinion v-for="(family_member_opinion, index) in this.family_member_opinions"
                                           :key="family_member_opinion.id"
+                                          :is_input="true"
                                           v-bind:family_member_opinion="family_member_opinions[index]"
                                           v-model:family_member_opinion="family_member_opinions[index]"
               />
@@ -391,11 +400,14 @@ Vue.component('family-member-dish-edit'
 
 )
 
-Vue.component('family-member-opinion-form'
+Vue.component('family-member-opinion'
   props:
     family_member_opinion:
       type: Object
       required: true
+    is_input:
+      type: Boolean
+      default: true
   data: () ->
     return {
       icon_enjoyment:
@@ -413,18 +425,21 @@ Vue.component('family-member-opinion-form'
                 <dot-gauge v-bind:initial_value="family_member_opinion.enjoyment_level"
                            v-bind:icon="icon_enjoyment"
                            v-bind:label_width="16"
+                           v-bind:is_input="is_input"
                            v-model="family_member_opinion.enjoyment_level"
                 />
                 <dot-gauge v-bind:initial_value="family_member_opinion.cooking_ability_level"
                            v-bind:icon="icon_cooking_ability"
                            v-bind:label_width="16"
+                           v-bind:is_input="is_input"
                            v-model="family_member_opinion.cooking_ability_level"
                            v-if="family_member_opinion.family_member.can_cook"
                 />
                 <div class="clear"></div>
               </div>
               <div class="opinion_form_right">
-                <textarea v-model="family_member_opinion.note" placeholder="Add notes here..." />
+                <textarea v-if="is_input" v-model="family_member_opinion.note" placeholder="Add notes here..." />
+                <div v-else>{{family_member_opinion.note}}</div>
               </div>
               <div class="clear"></div>
             </div>
