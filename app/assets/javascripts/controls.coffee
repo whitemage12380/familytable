@@ -14,13 +14,20 @@ Vue.component('dot-gauge'
       type: Number
       default: () ->
         return 6
+    icon:
+      type: Object # Keys: src, title
+    label_width:
+      type: Number # Pixels
   data: () ->
     return {
       value: this.initial_value
     }
   template: """
             <div class="dot_gauge_form">
-              <div class="dot_gauge_label"><slot></slot></div>
+              <div :style="label_width && {width: label_width + 'px' }" class="dot_gauge_label">
+                <img v-if="icon" :src="icon.src" :title="icon.title" class="dot_gauge_icon" />
+                <slot></slot>
+              </div>
               <div class="dot_gauge">
                 <div class="dot" v-for="n in max_value" v-bind:class="{dot_filled: is_filled(n)}" v-on:click="select_value(n)"></div>
               </div>
@@ -33,6 +40,7 @@ Vue.component('dot-gauge'
       if this.is_input
         this.value = n
         this.$emit('input', this.value)
+
   watch:
     initial_value: (val) ->
       this.value = val

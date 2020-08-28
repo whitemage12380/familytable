@@ -396,13 +396,35 @@ Vue.component('family-member-opinion-form'
     family_member_opinion:
       type: Object
       required: true
+  data: () ->
+    return {
+      icon_enjoyment:
+        src: "assets/icon_heart.svg"
+        title: "Enjoyment"
+      icon_cooking_ability:
+        src: "assets/icon_chef.svg"
+        title: "Cooking Ability"
+    }
   template: """
             <div class="family_member_opinion_form">
               <div class="opinion_form_left">
-                <family-member-circle v-bind:first_name="this.family_member_opinion.family_member.first_name" />
+                <family-member-circle v-bind:first_name="family_member_opinion.family_member.first_name" />
+                <div class="clear"></div>
+                <dot-gauge v-bind:initial_value="family_member_opinion.enjoyment_level"
+                           v-bind:icon="icon_enjoyment"
+                           v-bind:label_width="16"
+                           v-model="family_member_opinion.enjoyment_level"
+                />
+                <dot-gauge v-bind:initial_value="family_member_opinion.cooking_ability_level"
+                           v-bind:icon="icon_cooking_ability"
+                           v-bind:label_width="16"
+                           v-model="family_member_opinion.cooking_ability_level"
+                           v-if="family_member_opinion.family_member.can_cook"
+                />
+                <div class="clear"></div>
               </div>
               <div class="opinion_form_right">
-                <textarea v-model="family_member_opinion.note" placeholder="Add notes here" />
+                <textarea v-model="family_member_opinion.note" placeholder="Add notes here..." />
               </div>
               <div class="clear"></div>
             </div>

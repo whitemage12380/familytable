@@ -45,14 +45,28 @@
 
 .family_member_opinion_form {
   margin: 4px;
+  padding: 4px;
+  border: 1px solid #287330;
+  border-radius: 0.5em;
   display: flex;
 
   .opinion_form_left {
     flex-grow: 0;
-    width: 120px;
+    width: 140px;
   }
   .opinion_form_right {
     flex-grow: 1;
+  }
+  .profile_image_circle {
+    margin-bottom: 4px;
+    margin-left: 14px;
+  }
+  .dot_gauge {
+    margin: 4px;
+  }
+  textarea {
+    width: 95%;
+    height: 95%;
   }
 }
 
