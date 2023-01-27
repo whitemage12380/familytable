@@ -36,7 +36,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 gem 'jquery-rails'
-gem 'jquery-ui-rails', '~> 5.0.5'
+gem 'jquery-ui-rails', '~> 6.0.0'
 #gem 'jquery-turbolinks'
 
 gem 'vuejs-rails'
